@@ -15,12 +15,20 @@ jobs:
     - name: docker install
       uses: docker/install-buildx-action@v2
 
-    - name: login to ACR
-      uses: azure/docker-login@v1
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v2
+    
+    - name: azure login using federated credentials
+      uses: azure/login@v1
       with:
-        login-server: k8acrregistry.azurecr.io
-        username: ${{ secrets.ACR_USERNAME }}
-        password: ${{ secrets.ACR_PASSWORD }}
+        client-id: "ed64b1f2-b223-4b4c-856b-9a70c6886972"
+        tenant-id: "766f0785-716a-4d22-944b-ee4644c00169"
+        subscription-id: "88b91a30-b8e8-4952-92c8-74b9438a6add"
+
+
+    - name: login to ACR
+      run: |
+        az acr login --name k8acrregistry.azurecr.io
 
 
     - name: Set up Docker Buildx
