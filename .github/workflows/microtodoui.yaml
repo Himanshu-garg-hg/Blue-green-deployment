@@ -39,5 +39,6 @@ jobs:
       uses: docker/build-push-action@v4
       with:
         context: ./k8_application/MicroTodoUI
+        file: ./k8_application/MicroTodoUI/Dockerfile
         push: true
         tags: k8acrregistry.azurecr.io/microtodoui:latest
