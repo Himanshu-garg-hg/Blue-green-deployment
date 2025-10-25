@@ -40,4 +40,4 @@ jobs:
       with:
         context: ./k8_application/Microtodoui
         push: true
-        tags: ${{ secrets.ACR_LOGIN_SERVER }}/microtodoui:latest
+        tags: k8acrregistry.azurecr.io/microtodoui:latest
