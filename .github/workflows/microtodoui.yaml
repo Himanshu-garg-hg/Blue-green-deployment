@@ -16,11 +16,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
     
-    - name: Set up Docker
-      uses: docker/setup-docker-action@v4
+    # - name: Set up Docker
+    #   uses: docker/setup-docker-action@v4
 
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v2
+    # - name: Set up QEMU
+    #   uses: docker/setup-qemu-action@v2
     
     - name: azure login using federated credentials
       uses: azure/login@v1
@@ -32,11 +32,9 @@ jobs:
 
     - name: login to ACR
       run: |
-        az acr login --name k8acrregistry.azurecr.io
+        az acr login --name k8acrregistry
+        ls -la ./k8_application/MicroTodoUI
 
-    - name: run cmd
-      run: ls ./k8_application/MicroTodoUI
-      
     - name: Build and Push Image to ACR
       uses: docker/build-push-action@v4
       with:
