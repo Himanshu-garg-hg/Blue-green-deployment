@@ -18,7 +18,7 @@ jobs:
 
     - run: |
           ls -la 
-          ls -la ./k8_application/MicroTodoUI
+          ls -la k8_application/MicroTodoUI
     
     # - name: Set up Docker
     #   uses: docker/setup-docker-action@v4
