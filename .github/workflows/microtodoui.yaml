@@ -15,6 +15,10 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+
+    - run: |
+          ls -la 
+          ls -la ./k8_application/MicroTodoUI
     
     # - name: Set up Docker
     #   uses: docker/setup-docker-action@v4
@@ -22,18 +26,18 @@ jobs:
     # - name: Set up QEMU
     #   uses: docker/setup-qemu-action@v2
     
-    - name: azure login using federated credentials
-      uses: azure/login@v1
-      with:
-        client-id: "ed64b1f2-b223-4b4c-856b-9a70c6886972"
-        tenant-id: "766f0785-716a-4d22-944b-ee4644c00169"
-        subscription-id: "88b91a30-b8e8-4952-92c8-74b9438a6add"
+    # - name: azure login using federated credentials
+    #   uses: azure/login@v1
+    #   with:
+    #     client-id: "ed64b1f2-b223-4b4c-856b-9a70c6886972"
+    #     tenant-id: "766f0785-716a-4d22-944b-ee4644c00169"
+    #     subscription-id: "88b91a30-b8e8-4952-92c8-74b9438a6add"
 
 
     - name: login to ACR
       run: |
         az acr login --name k8acrregistry
-        ls -la ./k8_application/MicroTodoUI
+
 
     - name: Build and Push Image to ACR
       uses: docker/build-push-action@v4
