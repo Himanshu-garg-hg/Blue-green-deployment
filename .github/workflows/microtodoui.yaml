@@ -38,6 +38,6 @@ jobs:
     - name: Build and Push Image to ACR
       uses: docker/build-push-action@v4
       with:
-        context: ./k8_application/Microtodoui
+        context: ./k8_application/MicroTodoUI
         push: true
         tags: k8acrregistry.azurecr.io/microtodoui:latest
