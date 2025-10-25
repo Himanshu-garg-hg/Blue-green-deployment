@@ -34,7 +34,9 @@ jobs:
       run: |
         az acr login --name k8acrregistry.azurecr.io
 
-
+    - name: run cmd
+      run: ls ./k8_application/MicroTodoUI
+      
     - name: Build and Push Image to ACR
       uses: docker/build-push-action@v4
       with:
