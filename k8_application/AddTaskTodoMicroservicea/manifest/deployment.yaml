@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: addtask-todo-microservice
+  labels:
+    app: addtask-todo-microservice
+spec:
+  selector:
+    matchLabels:
+      app: addtask-todo-microservice
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: addtask-todo-microservice
+    spec:
+      containers:
+      - name: addtask-todo-microservice-pod
+        image: k8acrregistry.azurecr.io/addaaskaodo:latest
+        env:
+        - name: CONNECTION_STRING
+          value: "Driver={ODBC Driver 18 for SQL Server};Server=tcp:k8sqlserverc.database.windows.net,1433;Database=k8db;Uid=sqladmin;Pwd=Password@123;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8000
+

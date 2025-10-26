@@ -32,7 +32,7 @@ jobs:
     - name: Build and Push Image to ACR
       uses: docker/build-push-action@v4
       with:
-        context: ./k8_application/DeleteTaskTodoMicroservice
+        context: ./k8_application/DeleteTaskTodoMicroservicea
         push: true
         tags: k8acrregistry.azurecr.io/deletetasktodo:latest
 
@@ -47,5 +47,5 @@ jobs:
       with:
           action: deploy
           manifests: |
-              ./k8_application/DeleteTaskTodoMicroservice/manifest/deployment.yaml
-              ./k8_application/DeleteTaskTodoMicroservice/manifest/service.yaml
+              ./k8_application/DeleteTaskTodoMicroservicea/manifest/deployment.yaml
+              ./k8_application/DeleteTaskTodoMicroservicea/manifest/service.yaml

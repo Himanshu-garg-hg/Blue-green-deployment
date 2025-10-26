@@ -32,7 +32,7 @@ jobs:
     - name: Build and Push Image to ACR
       uses: docker/build-push-action@v4
       with:
-        context: ./k8_application/AddTaskTodoMicroservice
+        context: ./k8_application/AddTaskTodoMicroservicea
         push: true
         tags: k8acrregistry.azurecr.io/addaaskaodo:latest
 
@@ -47,5 +47,5 @@ jobs:
       with:
           action: deploy
           manifests: |
-              ./k8_application/AddTaskTodoMicroservice/manifest/deployment.yaml
-              ./k8_application/AddTaskTodoMicroservice/manifest/service.yaml
+              ./k8_application/AddTaskTodoMicroservicea/manifest/deployment.yaml
+              ./k8_application/AddTaskTodoMicroservicea/manifest/service.yaml
