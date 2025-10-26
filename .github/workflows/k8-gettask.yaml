@@ -34,7 +34,7 @@ jobs:
       with:
         context: ./k8_application/GetTasksTodoMicroservice
         push: true
-        tags: k8acrregistry.azurecr.io/GetTasksTodo:latest
+        tags: k8acrregistry.azurecr.io/gettaskstodo:latest
 
     - name: Deploy to Kubernetes Cluster
       uses: azure/aks-set-context@v2

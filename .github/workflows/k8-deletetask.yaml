@@ -34,7 +34,7 @@ jobs:
       with:
         context: ./k8_application/DeleteTaskTodoMicroservice
         push: true
-        tags: k8acrregistry.azurecr.io/DeleteTaskTodo:latest
+        tags: k8acrregistry.azurecr.io/deletetasktodo:latest
 
     - name: Deploy to Kubernetes Cluster
       uses: azure/aks-set-context@v2
