@@ -1,0 +1,44 @@
+name: K8 Todo Infra workflow
+
+on: workflow_dispatch
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  terraform:
+    name: k8 infrastructure deployment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.6
+
+      - name: az login using federated credentials
+        uses: azure/login@v1
+        with:
+          client-id: "ed64b1f2-b223-4b4c-856b-9a70c6886972"
+          tenant-id: "766f0785-716a-4d22-944b-ee4644c00169"
+          subscription-id: "88b91a30-b8e8-4952-92c8-74b9438a6add"
+
+      - name: Terraform Init
+        working-directory: ./Infrastructure/root_module_k8s
+        run: terraform init
+
+      - name: Terraform fmt
+        working-directory: ./Infrastructure/root_module_k8s
+        run: terraform fmt --recusive
+
+      - name: Terraform plan
+        working-directory: ./Infrastructure/root_module_k8s
+        run: terraform plan
+
+      - name: Terraform Apply
+        working-directory: ./Infrastructure/root_module_k8s
+        run: terraform apply -auto-approve
+      

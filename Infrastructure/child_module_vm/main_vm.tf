@@ -25,22 +25,22 @@ resource "azurerm_network_interface" "nic1" {
   resource_group_name = azurerm_resource_group.rg1.name
   ip_configuration {
     name                          = "ipconfig-${each.key}"
-    subnet_id                     = "${azurerm_virtual_network.vnet1.subnet.*.id[index(azurerm_virtual_network.vnet1.subnet.*.name, "vm-subnet")]}"
+    subnet_id                     = azurerm_virtual_network.vnet1.subnet.*.id[index(azurerm_virtual_network.vnet1.subnet.*.name, "vm-subnet")]
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = can(regex("^frontend", each.key)) ? azurerm_public_ip.pip1[each.key].id : null
   }
 }
 
 resource "azurerm_linux_virtual_machine" "vm1" {
-  for_each              = var.vm
-  name                  = "linux-vm-${each.key}"
-  location              = azurerm_resource_group.rg1.location
-  resource_group_name   = azurerm_resource_group.rg1.name
-  network_interface_ids = [azurerm_network_interface.nic1[each.key].id]
-  size                  = each.value.vm_size
+  for_each                        = var.vm
+  name                            = "linux-vm-${each.key}"
+  location                        = azurerm_resource_group.rg1.location
+  resource_group_name             = azurerm_resource_group.rg1.name
+  network_interface_ids           = [azurerm_network_interface.nic1[each.key].id]
+  size                            = each.value.vm_size
   disable_password_authentication = each.value.admin_password == "" ? true : false
-  admin_username        = each.value.admin_username
-  admin_password        = each.value.admin_password
+  admin_username                  = each.value.admin_username
+  admin_password                  = each.value.admin_password
   os_disk {
     caching              = each.value.os_disk_caching
     storage_account_type = each.value.os_disk_storage_account_type
@@ -99,7 +99,7 @@ resource "azurerm_application_gateway" "network" {
 
   gateway_ip_configuration {
     name      = "my-gateway-ip-configuration"
-    subnet_id = "${azurerm_virtual_network.vnet1.subnet.*.id[index(azurerm_virtual_network.vnet1.subnet.*.name, "appgw-subnet")]}"
+    subnet_id = azurerm_virtual_network.vnet1.subnet.*.id[index(azurerm_virtual_network.vnet1.subnet.*.name, "appgw-subnet")]
   }
 
   frontend_port {

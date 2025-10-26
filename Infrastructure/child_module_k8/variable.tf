@@ -8,7 +8,7 @@ variable "location" {
 
 
 variable "acr_name" {
-  type = string 
+  type = string
 }
 
 variable "sql_server_name" {
