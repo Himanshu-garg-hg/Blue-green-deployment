@@ -1,4 +1,4 @@
-name: todoui-k8s-deploy
+name: Micro-todoui-k8s-deploy
 on: workflow_dispatch
 
 permissions:
@@ -25,11 +25,9 @@ jobs:
         tenant-id: "766f0785-716a-4d22-944b-ee4644c00169"
         subscription-id: "88b91a30-b8e8-4952-92c8-74b9438a6add"
 
-
     - name: login to ACR
       run: |
         az acr login --name k8acrregistry
-
 
     - name: Build and Push Image to ACR
       uses: docker/build-push-action@v4
@@ -37,3 +35,17 @@ jobs:
         context: ./k8_application/MicroTodoUI
         push: true
         tags: k8acrregistry.azurecr.io/microtodoui:latest
+
+    - name: Deploy to Kubernetes Cluster
+      uses: azure/aks-set-context@v2
+      with:
+        resource-group: rg-k8s-infra
+        cluster-name: todo-aks-cluster
+
+    - name: kubectl apply microtodoui manifest
+      uses: Azure/k8s-deploy@v5
+      with:
+          action: deploy
+          manifests: |
+              ./k8_application/MicroTodoUI/manifests/deployment.yml
+              ./k8_application/MicroTodoUI/manifests/service.yml

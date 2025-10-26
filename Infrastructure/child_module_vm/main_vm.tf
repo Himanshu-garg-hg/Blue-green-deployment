@@ -53,7 +53,6 @@ resource "azurerm_linux_virtual_machine" "vm1" {
   }
 }
 
-
 locals {
   frontend_vms = {
     for k, v in var.vm : k => v
