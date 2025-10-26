@@ -47,5 +47,5 @@ jobs:
       with:
           action: deploy
           manifests: |
-              ./k8_application/MicroTodoUI/manifests/deployment.yml
-              ./k8_application/MicroTodoUI/manifests/service.yml
+              ./k8_application/MicroTodoUI/manifest/deployment.yaml
+              ./k8_application/MicroTodoUI/manifest/service.yaml
