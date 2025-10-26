@@ -32,7 +32,7 @@ jobs:
 
       - name: Terraform fmt
         working-directory: ./Infrastructure/root_module_k8s
-        run: terraform fmt --recusive
+        run: terraform fmt --recursive
 
       - name: Terraform plan
         working-directory: ./Infrastructure/root_module_k8s
