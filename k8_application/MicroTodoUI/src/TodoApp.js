@@ -3,18 +3,18 @@ import axios from 'axios';
 import { Button, TextField, Container, Typography, Grid, Card, CardContent, IconButton } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import { Box } from '@mui/material';
-import config from './config'; // Import the config file with environment variable support
+// import config from './config'; // Import the config file with environment variable support
 
-// Use the config to define API URLs
+// //Use the config to define API URLs
 // const GET_TASKS_API_BASE_URL = config.GET_TASKS_API_BASE_URL;
 // const DELETE_TASK_API_BASE_URL = config.DELETE_TASK_API_BASE_URL;
 // const CREATE_TASK_API_BASE_URL = config.CREATE_TASK_API_BASE_URL;
 
 
 const config = {
-  GET_TASKS_API_BASE_URL: "http://10.0.55.237:80/tasks",
-  CREATE_TASK_API_BASE_URL: "http://10.0.171.170:80/tasks",
-  DELETE_TASK_API_BASE_URL: "http://10.0.219.231:80/tasks",
+  GET_TASKS_API_BASE_URL: "http://10.0.55.237:80",
+  CREATE_TASK_API_BASE_URL: "http://10.0.171.170:80",
+  DELETE_TASK_API_BASE_URL: "http://10.0.219.231:80",
 };
 
 
