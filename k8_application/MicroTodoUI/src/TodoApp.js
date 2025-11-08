@@ -12,16 +12,17 @@ import { Box } from '@mui/material';
 
 
 // const config = {
-//   GET_TASKS_API_BASE_URL: "http://10.0.55.237:80",
-//   CREATE_TASK_API_BASE_URL: "http://10.0.171.170:80",
-//   DELETE_TASK_API_BASE_URL: "http://10.0.219.231:80",
+//   GET_TASKS_API_BASE_URL: "http://gettask.tangi.fun",
+//   CREATE_TASK_API_BASE_URL: "http://addtask.tangi.fun",
+//   DELETE_TASK_API_BASE_URL: "http://deletetask.tangi.fun",
 // };
 
 const config = {
-  GET_TASKS_API_BASE_URL: "http://gettask.tangi.fun",
-  CREATE_TASK_API_BASE_URL: "http://addtask.tangi.fun",
-  DELETE_TASK_API_BASE_URL: "http://deletetask.tangi.fun",
+  GET_TASKS_API_BASE_URL: "/api/gettasks",
+  CREATE_TASK_API_BASE_URL: "/api/addtasks",
+  DELETE_TASK_API_BASE_URL: "/api/deletetasks",
 };
+
 
 const { GET_TASKS_API_BASE_URL, CREATE_TASK_API_BASE_URL, DELETE_TASK_API_BASE_URL } = config;
 
