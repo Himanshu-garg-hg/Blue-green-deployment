@@ -20,40 +20,42 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: todo-ingress
   annotations:
+    argocd.argoproj.io/tracking-id: microtodoui:networking.k8s.io/Ingress:default/todo-ingress
     kubernetes.io/ingress.class: azure/application-gateway
+  name: todo-ingress
+  namespace: default
 spec:
   ingressClassName: azure-application-gateway
   rules:
     - host: microtodo-ui.tangi.fun
       http:
         paths:
-          - path: /api/gettasks
-            pathType: Prefix
-            backend:
+          - backend:
               service:
                 name: gettasks-todo-microservice-service
                 port:
                   number: 80
-          - path: /api/addtasks
+            path: /api/gettasks
             pathType: Prefix
-            backend:
+          - backend:
               service:
                 name: addtask-todo-microservice-service
                 port:
                   number: 80
-          - path: /api/deletetasks
+            path: /api/addtasks
             pathType: Prefix
-            backend:
+          - backend:
               service:
                 name: deletetask-todo-microservice-service
                 port:
                   number: 80
-          - path: /
+            path: /api/deletetasks
             pathType: Prefix
-            backend:
+          - backend:
               service:
                 name: microtodo-ui-service
                 port:
                   number: 80
+            path: /
+            pathType: Prefix
