@@ -36,16 +36,16 @@ jobs:
         push: true
         tags: k8acrregistry.azurecr.io/addaaskaodo:latest
 
-    - name: Deploy to Kubernetes Cluster
-      uses: azure/aks-set-context@v2
-      with:
-        resource-group: rg-k8s-infra
-        cluster-name: todo-aks-cluster
+    # - name: Deploy to Kubernetes Cluster
+    #   uses: azure/aks-set-context@v2
+    #   with:
+    #     resource-group: rg-k8s-infra
+    #     cluster-name: todo-aks-cluster
 
-    - name: kubectl apply AddTaskTodoMicroservice manifest
-      uses: Azure/k8s-deploy@v5
-      with:
-          action: deploy
-          manifests: |
-              ./k8_application/AddTaskTodoMicroservicea/manifest/deployment.yaml
-              ./k8_application/AddTaskTodoMicroservicea/manifest/service.yaml
+    # - name: kubectl apply AddTaskTodoMicroservice manifest
+    #   uses: Azure/k8s-deploy@v5
+    #   with:
+    #       action: deploy
+    #       manifests: |
+    #           ./k8_application/AddTaskTodoMicroservicea/manifest/deployment.yaml
+    #           ./k8_application/AddTaskTodoMicroservicea/manifest/service.yaml
