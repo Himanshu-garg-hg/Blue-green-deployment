@@ -17,8 +17,6 @@ const config = {
   DELETE_TASK_API_BASE_URL: "http://10.0.219.231:80/tasks",
 };
 
-export default config;
-
 
 
 
