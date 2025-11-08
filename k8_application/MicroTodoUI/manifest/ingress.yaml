@@ -20,11 +20,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  annotations:
-    argocd.argoproj.io/tracking-id: microtodoui:networking.k8s.io/Ingress:default/todo-ingress
-    kubernetes.io/ingress.class: azure/application-gateway
   name: microtodoui-ingress
-  namespace: default
 spec:
   ingressClassName: azure-application-gateway
   rules:
@@ -57,5 +53,5 @@ spec:
                 name: microtodo-ui-service
                 port:
                   number: 80
-            path: /
+            path: "/"
             pathType: Prefix
