@@ -4,7 +4,7 @@ metadata:
   name: addtask-todo-microservice-service
 spec:
   selector:
-    app: addtetask-todo-microservice
+    app: addtask-todo-microservice
   ports:
   - port: 80
     targetPort: 8000
