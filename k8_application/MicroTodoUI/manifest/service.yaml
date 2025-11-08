@@ -5,7 +5,7 @@ metadata:
   labels:
     app: microtodo-ui
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: microtodo-ui
   ports:

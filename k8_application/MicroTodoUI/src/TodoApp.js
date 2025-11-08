@@ -11,10 +11,16 @@ import { Box } from '@mui/material';
 // const CREATE_TASK_API_BASE_URL = config.CREATE_TASK_API_BASE_URL;
 
 
+// const config = {
+//   GET_TASKS_API_BASE_URL: "http://10.0.55.237:80",
+//   CREATE_TASK_API_BASE_URL: "http://10.0.171.170:80",
+//   DELETE_TASK_API_BASE_URL: "http://10.0.219.231:80",
+// };
+
 const config = {
-  GET_TASKS_API_BASE_URL: "http://10.0.55.237:80",
-  CREATE_TASK_API_BASE_URL: "http://10.0.171.170:80",
-  DELETE_TASK_API_BASE_URL: "http://10.0.219.231:80",
+  GET_TASKS_API_BASE_URL: "http://gettask.tangi.fun",
+  CREATE_TASK_API_BASE_URL: "http://addtask.tangi.fun",
+  DELETE_TASK_API_BASE_URL: "http://deletetask.tangi.fun",
 };
 
 const { GET_TASKS_API_BASE_URL, CREATE_TASK_API_BASE_URL, DELETE_TASK_API_BASE_URL } = config;

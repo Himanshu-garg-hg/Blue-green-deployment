@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: microtodoui-ingress
+spec:
+  ingressClassName: azure-application-gateway
+  rules:
+  - host: microtodo-ui.tangi.fun
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: microtodo-ui-service
+            port: 
+              number: 80

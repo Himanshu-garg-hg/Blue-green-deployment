@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: addtetask-todo-microservice-ingress
+spec:
+  ingressClassName: azure-application-gateway
+  rules:
+  - host: addtask.tangi.fun
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: addtask-todo-microservice-service
+            port: 
+              number: 80
