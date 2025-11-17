@@ -33,14 +33,14 @@ jobs:
 
     - name: login to ACR
       run: |
-        az acr login --name k8acrregistry-${{ github.event.inputs.env}}
+        az acr login --name k8acrregistry${{ github.event.inputs.env}}
 
     - name: Build and Push Image to ACR
       uses: docker/build-push-action@v4
       with:
         context: ./k8_application/GetTasksTodoMicroservicea
         push: true
-        tags: k8acrregistry-${{ github.event.inputs.env}}.azurecr.io/gettaskstodo:latest
+        tags: k8acrregistry${{ github.event.inputs.env}}.azurecr.io/gettaskstodo:latest
 
     # - name: Deploy to Kubernetes Cluster
     #   uses: azure/aks-set-context@v2

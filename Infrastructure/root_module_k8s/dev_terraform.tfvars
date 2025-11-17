@@ -1,6 +1,6 @@
 resource_group_name = "rg-k8s-infra"
 location            = "Central India"
-acr_name            = "k8acrregistry-dev"
+acr_name            = "k8acrregistrydev"
 sql_server_name     = "k8sqlserverc"
 database_name       = "k8db"
 k8_name             = "todo-aks-cluster"

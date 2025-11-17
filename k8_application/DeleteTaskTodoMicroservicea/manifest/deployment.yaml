@@ -16,7 +16,7 @@ spec:
      spec:
        containers:
           - name: deletetask-todo-microservice-pod
-            image: k8acrregistry-dev.azurecr.io/deletetasktodo:latest
+            image: k8acrregistrydev.azurecr.io/deletetasktodo:latest
             ports:
               - containerPort: 8000
             env:

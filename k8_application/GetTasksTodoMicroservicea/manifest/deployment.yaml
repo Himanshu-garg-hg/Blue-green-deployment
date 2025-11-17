@@ -16,7 +16,7 @@ spec:
      spec:
        containers:
           - name: gettasks-todo-microservice-pod
-            image: k8acrregistry-dev.azurecr.io/gettaskstodo:latest
+            image: k8acrregistrydev.azurecr.io/gettaskstodo:latest
             ports:
               - containerPort: 8000
             env:
