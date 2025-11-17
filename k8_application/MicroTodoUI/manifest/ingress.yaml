@@ -1,22 +1,3 @@
-# apiVersion: networking.k8s.io/v1
-# kind: Ingress
-# metadata:
-#   name: microtodoui-ingress
-# spec:
-#   ingressClassName: azure-application-gateway
-#   rules:
-#   - host: microtodo-ui.tangi.fun
-#     http:
-#       paths:
-#       - pathType: Prefix
-#         path: "/"
-#         backend:
-#           service:
-#             name: microtodo-ui-service
-#             port: 
-#               number: 80
-
-
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -24,34 +5,53 @@ metadata:
 spec:
   ingressClassName: azure-application-gateway
   rules:
-    - host: microtodo-ui.tangi.fun
-      http:
-        paths:
-          - backend:
-              service:
-                name: gettasks-todo-microservice-service
-                port:
-                  number: 80
-            path: /api/gettasks
-            pathType: Prefix
-          - backend:
-              service:
-                name: addtask-todo-microservice-service
-                port:
-                  number: 80
-            path: /api/addtasks
-            pathType: Prefix
-          - backend:
-              service:
-                name: deletetask-todo-microservice-service
-                port:
-                  number: 80
-            path: /api/deletetasks
-            pathType: Prefix
-          - backend:
-              service:
-                name: microtodo-ui-service
-                port:
-                  number: 80
-            path: "/"
-            pathType: Prefix
+  - host: microtodo-ui.tangi.fun
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: microtodo-ui-service
+            port: 
+              number: 80
+
+
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: microtodoui-ingress
+# spec:
+#   ingressClassName: azure-application-gateway
+#   rules:
+#     - host: microtodo-ui.tangi.fun
+#       http:
+#         paths:
+#           - backend:
+#               service:
+#                 name: gettasks-todo-microservice-service
+#                 port:
+#                   number: 80
+#             path: /api/gettasks
+#             pathType: Prefix
+#           - backend:
+#               service:
+#                 name: addtask-todo-microservice-service
+#                 port:
+#                   number: 80
+#             path: /api/addtasks
+#             pathType: Prefix
+#           - backend:
+#               service:
+#                 name: deletetask-todo-microservice-service
+#                 port:
+#                   number: 80
+#             path: /api/deletetasks
+#             pathType: Prefix
+#           - backend:
+#               service:
+#                 name: microtodo-ui-service
+#                 port:
+#                   number: 80
+#             path: "/"
+#             pathType: Prefix

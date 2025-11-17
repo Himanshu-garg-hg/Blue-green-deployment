@@ -3,12 +3,12 @@ import axios from 'axios';
 import { Button, TextField, Container, Typography, Grid, Card, CardContent, IconButton } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import { Box } from '@mui/material';
-// import config from './config'; // Import the config file with environment variable support
+import config from './config'; // Import the config file with environment variable support
 
-// //Use the config to define API URLs
-// const GET_TASKS_API_BASE_URL = config.GET_TASKS_API_BASE_URL;
-// const DELETE_TASK_API_BASE_URL = config.DELETE_TASK_API_BASE_URL;
-// const CREATE_TASK_API_BASE_URL = config.CREATE_TASK_API_BASE_URL;
+//Use the config to define API URLs
+const GET_TASKS_API_BASE_URL = "http://gettask.tangi.fun";
+const DELETE_TASK_API_BASE_URL = "http://deletetask.tangi.fun";
+const CREATE_TASK_API_BASE_URL = "http://addtask.tangi.fun";
 
 
 // const config = {
@@ -17,21 +17,22 @@ import { Box } from '@mui/material';
 //   DELETE_TASK_API_BASE_URL: "http://deletetask.tangi.fun",
 // };
 
-const config = {
-  GET_TASKS_API_BASE_URL: "/api/gettasks",
-  CREATE_TASK_API_BASE_URL: "/api/addtasks",
-  DELETE_TASK_API_BASE_URL: "/api/deletetasks",
-};
+// const config = {
+//   GET_TASKS_API_BASE_URL: "/api/gettasks",
+//   CREATE_TASK_API_BASE_URL: "/api/addtasks",
+//   DELETE_TASK_API_BASE_URL: "/api/deletetasks",
+// };
 
 
-const { GET_TASKS_API_BASE_URL, CREATE_TASK_API_BASE_URL, DELETE_TASK_API_BASE_URL } = config;
+// const { GET_TASKS_API_BASE_URL, CREATE_TASK_API_BASE_URL, DELETE_TASK_API_BASE_URL } = config;
 
+const backgroundImage = process.env.PUBLIC_URL + '/background.jpg';
 
 
 //Update Task Functionality is Work In Progress
 // const UPDATE_TASK_API_BASE_URL = '';
 
-const backgroundImage = process.env.PUBLIC_URL + '/background.jpg';
+// const backgroundImage = process.env.PUBLIC_URL + '/background.jpg';
 
 function TodoApp() {
     const [tasks, setTasks] = useState([]);
