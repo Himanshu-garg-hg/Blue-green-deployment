@@ -25,7 +25,7 @@ RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor
 RUN curl -fsSL https://packages.microsoft.com/config/debian/10/prod.list -o /etc/apt/sources.list.d/mssql-release.list
 
 RUN apt-get update \
-	&& ACCEPT_EULA=Y apt-get install -y --no-install-recommends msodbcsql17 \
+	&& ACCEPT_EULA=Y apt-get install -y --no-install-recommends msodbcsql18 \
 	&& rm -rf /var/lib/apt/lists/*
 
 RUN pip install -r requirements.txt
