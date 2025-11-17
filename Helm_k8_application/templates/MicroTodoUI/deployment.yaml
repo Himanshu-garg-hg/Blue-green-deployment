@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-microtodo-ui-pod
+  labels:
+    app: {{ .Release.Name }}-microtodo-ui
+spec:
+   replicas: {{ .Values.microtodoui.replicas }}
+   selector:
+     matchLabels:
+        app: {{ .Release.Name }}-microtodo-ui
+   template:
+     metadata:
+       labels:
+         app: {{ .Release.Name }}-microtodo-ui
+     spec:
+       containers:
+         - name: {{ .Release.Name }}-microtodo-ui
+           image: k8acrregistry{{ .Release.Name }}.azurecr.io/microtodoui:latest
+           ports:
+             - containerPort: {{ .Values.microtodoui.port }}
+           resources:
+             requests:
+               cpu: "100m"
+               memory: "128Mi"
+             limits:
+               cpu: "250m"
+               memory: "256Mi"
