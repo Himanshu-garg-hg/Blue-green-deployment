@@ -16,7 +16,7 @@ spec:
      spec:
        containers:
          - name: microtodo-ui-pod
-           image: k8acrregistry.azurecr.io/microtodoui:latest
+           image: k8acrregistry-dev.azurecr.io/microtodoui:latest
            ports:
              - containerPort: 80
            resources:

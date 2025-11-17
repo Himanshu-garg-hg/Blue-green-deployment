@@ -1,6 +1,12 @@
 name: K8 Todo Infra workflow
 
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
+    inputs:
+      env:
+        description: 'Environment Name'
+        required: true
+        default: 'dev'
 
 permissions:
   contents: read
@@ -22,9 +28,9 @@ jobs:
       - name: az login using federated credentials
         uses: azure/login@v1
         with:
-          client-id: "ed64b1f2-b223-4b4c-856b-9a70c6886972"
-          tenant-id: "766f0785-716a-4d22-944b-ee4644c00169"
-          subscription-id: "88b91a30-b8e8-4952-92c8-74b9438a6add"
+          client-id: "23604f03-61da-4f4c-a41e-76f2b84f5e09"
+          tenant-id: "90d26b91-2a7d-4998-a059-54dd93adebf6"
+          subscription-id: "651a708a-a61f-48a6-8006-0d3a0036a680"
 
       - name: Terraform Init
         working-directory: ./Infrastructure/root_module_k8s
@@ -36,9 +42,9 @@ jobs:
 
       - name: Terraform plan
         working-directory: ./Infrastructure/root_module_k8s
-        run: terraform plan
+        run: terraform plan --var-file=${{ github.event.inputs.env}}_terraform.tfvars
 
       - name: Terraform Apply
         working-directory: ./Infrastructure/root_module_k8s
-        run: terraform apply -auto-approve
+        run: terraform apply --var-file=${{ github.event.inputs.env}}_terraform.tfvars -auto-approve
       

@@ -1,5 +1,11 @@
 name: Micro-todoui-k8s-deploy
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
+    inputs:
+      env:
+        description: 'Environment Name'
+        required: true
+        default: 'dev'
 
 permissions:
   contents: read
@@ -18,23 +24,23 @@ jobs:
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2
     
-    - name: azure login using federated credentials
+    - name: az login using federated credentials
       uses: azure/login@v1
       with:
-        client-id: "ed64b1f2-b223-4b4c-856b-9a70c6886972"
-        tenant-id: "766f0785-716a-4d22-944b-ee4644c00169"
-        subscription-id: "88b91a30-b8e8-4952-92c8-74b9438a6add"
+        client-id: "23604f03-61da-4f4c-a41e-76f2b84f5e09"
+        tenant-id: "90d26b91-2a7d-4998-a059-54dd93adebf6"
+        subscription-id: "651a708a-a61f-48a6-8006-0d3a0036a680"
 
     - name: login to ACR
       run: |
-        az acr login --name k8acrregistry
+        az acr login --name k8acrregistry-${{ github.event.inputs.env}}
 
     - name: Build and Push Image to ACR
       uses: docker/build-push-action@v4
       with:
         context: ./k8_application/MicroTodoUI
         push: true
-        tags: k8acrregistry.azurecr.io/microtodoui:latest
+        tags: k8acrregistry-${{ github.event.inputs.env}}.azurecr.io/microtodoui:latest
 
     # - name: Deploy to Kubernetes Cluster
     #   uses: azure/aks-set-context@v2
