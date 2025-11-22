@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Release.Name }}-gettasks-todo-microservice-ingress
+  name: {{ .Values.environment }}-gettasks-todo-microservice-ingress
   labels:
     app.kubernetes.io/name: myingress
 spec:
@@ -14,6 +14,6 @@ spec:
         path: "/"
         backend:
           service:
-            name: {{ .Release.Name }}-gettasks-todo-microservice-service
+            name: {{ .Values.environment }}-gettasks-todo-microservice-service
             port: 
               number: {{ .Values.gettask.port }}

@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-microtodo-ui-pod
+  name: {{ .Values.environment }}-microtodo-ui-pod
   labels:
-    app: {{ .Release.Name }}-microtodo-ui
+    app: {{ .Values.environment }}-microtodo-ui
 spec:
    replicas: {{ .Values.microtodoui.replicas }}
    selector:
      matchLabels:
-        app: {{ .Release.Name }}-microtodo-ui
+        app: {{ .Values.environment }}-microtodo-ui
    template:
      metadata:
        labels:
-         app: {{ .Release.Name }}-microtodo-ui
+         app: {{ .Values.environment }}-microtodo-ui
      spec:
        containers:
-         - name: {{ .Release.Name }}-microtodo-ui
-           image: k8acrregistry{{ .Release.Name }}.azurecr.io/microtodoui:latest
+         - name: {{ .Values.environment }}-microtodo-ui
+           image: k8acrregistry{{ .Values.environment }}.azurecr.io/microtodoui:latest
            ports:
              - containerPort: {{ .Values.microtodoui.port }}
            resources:

@@ -1,27 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-deletetask-todo-pod
+  name: {{ .Values.environment }}-deletetask-todo-pod
   labels:
-    app: {{ .Release.Name }}-deletetask-todo-microservice
+    app: {{ .Values.environment }}-deletetask-todo-microservice
 spec:
    replicas: {{ .Values.deletetask.replicas }}
    selector:
       matchLabels:
-          app: {{ .Release.Name }}-deletetask-todo-microservice
+          app: {{ .Values.environment }}-deletetask-todo-microservice
    template:
      metadata:
        labels:
-          app: {{ .Release.Name }}-deletetask-todo-microservice
+          app: {{ .Values.environment }}-deletetask-todo-microservice
      spec:
        containers:
-          - name: {{ .Release.Name }}-deletetask-todo-microservice
-            image: k8acrregistry{{ .Release.Name }}.azurecr.io/deletetasktodo:latest
+          - name: {{ .Values.environment }}-deletetask-todo-microservice
+            image: k8acrregistry{{ .Values.environment }}.azurecr.io/deletetasktodo:latest
             ports:
               - containerPort: {{ .Values.deletetask.targetPort }}
             env:
               - name: CONNECTION_STRING
-                value: "Driver={ODBC Driver 18 for SQL Server};Server=tcp:{{ .Release.Name }}k8sqlserverc.database.windows.net,1433;Database=k8db;Uid=sqladmin;Pwd=Password@123;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"                                          
+                value: "Driver={ODBC Driver 18 for SQL Server};Server=tcp:{{ .Values.environment }}k8sqlserverc.database.windows.net,1433;Database=k8db;Uid=sqladmin;Pwd=Password@123;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"                                          
             resources:
               requests:
                 cpu: "100m"

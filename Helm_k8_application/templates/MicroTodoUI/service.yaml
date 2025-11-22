@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}-microtodo-ui-service
+  name: {{ .Values.environment }}-microtodo-ui-service
   labels:
-    app: {{ .Release.Name }}-microtodo-ui
+    app: {{ .Values.environment }}-microtodo-ui
 spec:
   type: ClusterIP
   selector:
-    app: {{ .Release.Name }}-microtodo-ui
+    app: {{ .Values.environment }}-microtodo-ui
   ports:
     - protocol: TCP
       port: {{ .Values.microtodoui.port }}

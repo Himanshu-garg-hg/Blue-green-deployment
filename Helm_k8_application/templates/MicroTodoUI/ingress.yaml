@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Release.Name }}-microtodoui-ingress
+  name: {{ .Values.environment }}-microtodoui-ingress
 spec:
   ingressClassName: azure-application-gateway
   rules:
@@ -12,7 +12,7 @@ spec:
         path: "/"
         backend:
           service:
-            name: {{ .Release.Name }}-microtodo-ui-service
+            name: {{ .Values.environment }}-microtodo-ui-service
             port: 
               number: {{ .Values.microtodoui.port }}
 

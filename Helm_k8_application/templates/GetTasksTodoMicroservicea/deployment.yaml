@@ -1,27 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-gettasks-todo-microservice-pod
+  name: {{ .Values.environment }}-gettasks-todo-microservice-pod
   labels:
-    app: {{ .Release.Name }}-gettasks-todo-microservice
+    app: {{ .Values.environment }}-gettasks-todo-microservice
 spec:
    replicas: {{ .Values.gettask.replicas }}
    selector:
      matchLabels:
-        app: {{ .Release.Name }}-gettasks-todo-microservice
+        app: {{ .Values.environment }}-gettasks-todo-microservice
    template:
      metadata:
        labels:
-          app: {{ .Release.Name }}-gettasks-todo-microservice
+          app: {{ .Values.environment }}-gettasks-todo-microservice
      spec:
        containers:
-          - name: {{ .Release.Name }}-gettasks-todo-microservice
-            image: k8acrregistry{{ .Release.Name }}.azurecr.io/gettaskstodo:latest
+          - name: {{ .Values.environment }}-gettasks-todo-microservice
+            image: k8acrregistry{{ .Values.environment }}.azurecr.io/gettaskstodo:latest
             ports:
               - containerPort: {{ .Values.gettask.targetPort }}
             env:
               - name: CONNECTION_STRING
-                value: "Driver={ODBC Driver 18 for SQL Server};Server=tcp:{{ .Release.Name }}k8sqlserverc.database.windows.net,1433;Database=k8db;Uid=sqladmin;Pwd=Password@123;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"                                          
+                value: "Driver={ODBC Driver 18 for SQL Server};Server=tcp:{{ .Values.environment }}k8sqlserverc.database.windows.net,1433;Database=k8db;Uid=sqladmin;Pwd=Password@123;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"                                          
             resources:
               requests:
                 cpu: "100m"
