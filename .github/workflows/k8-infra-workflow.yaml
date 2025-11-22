@@ -6,6 +6,7 @@ on:
       env:
         description: 'Environment Name'
         required: true
+        type: choice
         options:
           - 'dev'
           - 'qa'
