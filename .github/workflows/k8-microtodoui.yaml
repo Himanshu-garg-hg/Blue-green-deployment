@@ -5,7 +5,10 @@ on:
       env:
         description: 'Environment Name'
         required: true
-        default: 'dev'
+        options:
+          - 'dev'
+          - 'qa'
+          - 'prod'
 
 permissions:
   contents: read
@@ -33,9 +36,29 @@ jobs:
 
 
     - name: enable agic feature
-      run: az aks enable-addons  --resource-group rg-k8s-infra   --name todo-aks-cluster  --addons ingress-appgw  --subnet-cidr "10.2.0.0/24"
+      run: |
+        echo "Selected env: ${{ github.event.inputs.env }}"
+        case "${{ github.event.inputs.env }}" in
+          dev)
+            SUBNET_CIDR="10.2.0.0/24"
+            ;;
+          qa)
+            SUBNET_CIDR="10.3.0.0/24"
+            ;;
+          prod)
+            SUBNET_CIDR="10.4.0.0/24"
+            ;;
+          *)
+            echo "Unknown environment: ${{ github.event.inputs.env }}"; exit 1
+            ;;
+        esac
+        echo "Using subnet CIDR: $SUBNET_CIDR"
+        az aks enable-addons \
+          --resource-group "${{ github.event.inputs.env }}rg-k8s-infra" \
+          --name "${{ github.event.inputs.env }}todo-aks-cluster" \
+          --addons ingress-appgw \
+          --subnet-cidr "$SUBNET_CIDR"  
 
-        
     - name: login to ACR
       run: |
         az acr login --name k8acrregistry${{ github.event.inputs.env}}

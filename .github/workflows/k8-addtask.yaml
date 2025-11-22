@@ -5,7 +5,10 @@ on:
       env:
         description: 'Environment Name'
         required: true
-        default: 'dev'
+        options:
+          - 'dev'
+          - 'qa'
+          - 'prod'
 
 
 permissions:
