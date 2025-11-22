@@ -31,6 +31,11 @@ jobs:
         tenant-id: "90d26b91-2a7d-4998-a059-54dd93adebf6"
         subscription-id: "651a708a-a61f-48a6-8006-0d3a0036a680"
 
+
+    - name: enable agic feature
+      run: az aks enable-addons  --resource-group rg-k8s-infra   --name todo-aks-cluster  --addons ingress-appgw
+
+        
     - name: login to ACR
       run: |
         az acr login --name k8acrregistry${{ github.event.inputs.env}}

@@ -20,6 +20,15 @@ resource "azurerm_mssql_server" "server" {
   administrator_login_password = "Password@123"
 }
 
+
+resource "azurerm_mssql_firewall_rule" "allow_azure_services" {
+  name             = "AllowAllAzureIPs"
+  server_id        = azurerm_mssql_server.server.id
+  start_ip_address = "0.0.0.0"
+  end_ip_address   = "0.0.0.0"
+}
+
+
 resource "azurerm_mssql_database" "database" {
   name         = var.database_name
   server_id    = azurerm_mssql_server.server.id
