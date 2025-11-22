@@ -58,7 +58,7 @@ jobs:
           --resource-group "${{ github.event.inputs.env }}rg-k8s-infra" \
           --name "${{ github.event.inputs.env }}todo-aks-cluster" \
           --addons ingress-appgw \
-          --subnet-cidr "$SUBNET_CIDR"  
+          --appgw-subnet-cidr "$SUBNET_CIDR"  
 
     - name: login to ACR
       run: |

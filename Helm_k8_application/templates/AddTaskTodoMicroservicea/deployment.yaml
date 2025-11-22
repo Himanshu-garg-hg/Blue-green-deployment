@@ -19,7 +19,7 @@ spec:
         image: k8acrregistry{{ .Release.Name }}.azurecr.io/addaaskaodo:latest
         env:
         - name: CONNECTION_STRING
-          value: "Driver={ODBC Driver 18 for SQL Server};Server=tcp:k8sqlserverc.database.windows.net,1433;Database=k8db;Uid=sqladmin;Pwd=Password@123;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
+          value: "Driver={ODBC Driver 18 for SQL Server};Server=tcp:{{ .Release.Name }}k8sqlserverc.database.windows.net,1433;Database=k8db;Uid=sqladmin;Pwd=Password@123;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
         resources:
           requests:
             memory: "64Mi"
