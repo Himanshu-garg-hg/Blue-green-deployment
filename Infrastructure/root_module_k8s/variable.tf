@@ -22,3 +22,17 @@ variable "database_name" {
 variable "k8_name" {
   type = string
 }
+
+
+variable "client_id" {
+  type = string
+}
+variable "tenant_id" {
+  type = string
+  
+}
+
+variable "subscription_id" {
+  type = string
+  
+}
