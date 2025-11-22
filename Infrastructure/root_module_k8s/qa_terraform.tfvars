@@ -1,0 +1,6 @@
+resource_group_name = "qarg-k8s-infra"
+location            = "Central India"
+acr_name            = "k8acrregistryqa"
+sql_server_name     = "qak8sqlserverc"
+database_name       = "qak8db"
+k8_name             = "qatodo-aks-cluster"

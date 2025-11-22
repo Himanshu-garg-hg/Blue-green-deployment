@@ -33,7 +33,7 @@ jobs:
 
 
     - name: enable agic feature
-      run: az aks enable-addons  --resource-group rg-k8s-infra   --name todo-aks-cluster  --addons ingress-appgw
+      run: az aks enable-addons  --resource-group rg-k8s-infra   --name todo-aks-cluster  --addons ingress-appgw  --subnet-cidr "10.2.0.0/24"
 
         
     - name: login to ACR

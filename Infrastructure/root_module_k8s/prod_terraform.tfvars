@@ -1,0 +1,6 @@
+resource_group_name = "prodrg-k8s-infra"
+location            = "Central India"
+acr_name            = "k8acrregistryprod"
+sql_server_name     = "prodk8sqlserverc"
+database_name       = "prodk8db"
+k8_name             = "prodtodo-aks-cluster"
