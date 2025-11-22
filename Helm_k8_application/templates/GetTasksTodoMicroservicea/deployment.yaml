@@ -21,7 +21,7 @@ spec:
               - containerPort: {{ .Values.gettask.targetPort }}
             env:
               - name: CONNECTION_STRING
-                value: "Driver={ODBC Driver 18 for SQL Server};Server=tcp:{{ .Values.environment }}k8sqlserverc.database.windows.net,1433;Database=k8db;Uid=sqladmin;Pwd=Password@123;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"                                          
+                value: "Driver={ODBC Driver 18 for SQL Server};Server=tcp:{{ .Values.environment }}k8sqlserverc.database.windows.net,1433;Database={{ .Values.environment }}k8db;Uid=sqladmin;Pwd=Password@123;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"                                          
             resources:
               requests:
                 cpu: "100m"
