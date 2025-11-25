@@ -20,8 +20,8 @@ spec:
             driver: secrets-store.csi.k8s.io
             readOnly: true
             volumeAttributes:
-              secretProviderClass: "aks-keyvault-secrets"
-              
+              secretProviderClass: "{{ .Release.Name }}-aks-keyvault-secrets"
+
       containers:
       - name: {{ .Release.Name }}-addtask-todo-microservice
         image: k8acrregistry{{ .Values.environment }}.azurecr.io/{{ .Values.addtask.imagename }}:{{ .Values.addtask.imageversion }}
