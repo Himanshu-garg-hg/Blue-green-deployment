@@ -1,6 +1,8 @@
 environment: dev
 ingress:
-  enabled: false
+  enabled: True
+  serviceactive: dev-blue-todoapp
+
 microtodoui:
   port: 80
   targetPort: 80

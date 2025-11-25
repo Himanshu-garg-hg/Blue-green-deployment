@@ -1,6 +1,7 @@
 environment: dev
 ingress:
   enabled: false
+  serviceactive: dev-green-todoapp
 microtodoui:
   port: 80
   targetPort: 80
