@@ -1,3 +1,4 @@
+{{- if .Values.ingress.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -14,6 +15,7 @@ spec:
         path: "/"
         backend:
           service:
-            name: {{ .Release.Name }}-gettasks-todo-microservice-service
+            name: {{ .Values.ingress.serviceactive }}-gettasks-todo-microservice-service
             port: 
               number: {{ .Values.gettask.port }}
+{{- end }}

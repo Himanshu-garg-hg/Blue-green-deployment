@@ -1,4 +1,6 @@
 environment: dev
+ingress:
+  enabled: false
 microtodoui:
   port: 80
   targetPort: 80

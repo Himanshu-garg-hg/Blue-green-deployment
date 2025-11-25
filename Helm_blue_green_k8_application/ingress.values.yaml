@@ -1,0 +1,3 @@
+ingress:
+  enabled: true
+  serviceactive: dev-blue-todoapp
