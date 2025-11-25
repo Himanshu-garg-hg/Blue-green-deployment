@@ -53,7 +53,7 @@ resource "azurerm_key_vault" "kv" {
 
 resource "azurerm_role_assignment" "aks_sp_kv_role" {
   principal_id = data.azuread_service_principal.sp.object_id
-  role_definition_name = "Key Vault Administratorr"
+  role_definition_name = "Key Vault Administrator"
   scope = azurerm_key_vault.kv.id
 }
 
