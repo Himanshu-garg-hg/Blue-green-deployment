@@ -22,3 +22,7 @@ variable "database_name" {
 variable "k8_name" {
   type = string
 }
+
+variable "key_vault_name" {
+  type = string
+}

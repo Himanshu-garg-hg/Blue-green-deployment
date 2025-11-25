@@ -7,4 +7,5 @@ module "new_k8s" {
   sql_server_name     = var.sql_server_name
   database_name       = var.database_name
   k8_name             = var.k8_name
+  key_vault_name      = var.key_vault_name
 }

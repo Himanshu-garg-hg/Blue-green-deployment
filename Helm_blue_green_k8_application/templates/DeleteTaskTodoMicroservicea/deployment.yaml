@@ -14,14 +14,28 @@ spec:
        labels:
           app: {{ .Release.Name }}-deletetask-todo-microservice
      spec:
+       volumes:
+        - name: secrets-store-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "aks-keyvault-secrets"
        containers:
           - name: {{ .Release.Name }}-deletetask-todo-microservice
             image: k8acrregistry{{ .Values.environment }}.azurecr.io/{{ .Values.deletetask.imagename }}:{{ .Values.deletetask.imageversion }}
             ports:
               - containerPort: {{ .Values.deletetask.targetPort }}
             env:
-              - name: CONNECTION_STRING
-                value: "Driver={ODBC Driver 18 for SQL Server};Server=tcp:{{ .Values.environment }}k8sqlserverc.database.windows.net,1433;Database={{ .Values.environment }}k8db;Uid=sqladmin;Pwd=Password@123;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"                                          
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-password-secret
+                  key: DB_PASSWORD
+
+            - name: CONNECTION_STRING
+              value: "Driver={ODBC Driver 18 for SQL Server};Server=tcp:{{ .Values.environment }}k8sqlserverc.database.windows.net,1433;Database={{ .Values.environment }}k8db;Uid=sqladmin;Pwd=$(DB_PASSWORD);Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
+
             resources:
               requests:
                 cpu: "100m"

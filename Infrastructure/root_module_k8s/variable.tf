@@ -24,6 +24,10 @@ variable "k8_name" {
 }
 
 
+variable "key_vault_name" {
+  type = string
+}
+
 # variable "client_id" {
 #   type = string
 # }
