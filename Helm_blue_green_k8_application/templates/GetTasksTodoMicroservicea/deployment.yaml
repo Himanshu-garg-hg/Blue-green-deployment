@@ -1,46 +1,46 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: {{ .Release.Name }}-gettasks-todo-pod
-  labels:
-    app: {{ .Release.Name }}-gettasks-todo-microservice
-spec:
-   replicas: {{ .Values.gettask.replicas }}
-   selector:
-     matchLabels:
-        app: {{ .Release.Name }}-gettasks-todo-microservice
-   template:
-     metadata:
-       labels:
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: {{ .Release.Name }}-gettasks-todo-pod
+    labels:
+      app: {{ .Release.Name }}-gettasks-todo-microservice
+  spec:
+    replicas: {{ .Values.gettask.replicas }}
+    selector:
+      matchLabels:
           app: {{ .Release.Name }}-gettasks-todo-microservice
-     spec:
-       volumes:
-        - name: secrets-store-inline
-          csi:
-            driver: secrets-store.csi.k8s.io
-            readOnly: true
-            volumeAttributes:
-              secretProviderClass: "{{ .Release.Name }}-aks-keyvault-secrets"
+    template:
+      metadata:
+        labels:
+            app: {{ .Release.Name }}-gettasks-todo-microservice
+      spec:
+        volumes:
+          - name: secrets-store-inline
+            csi:
+              driver: secrets-store.csi.k8s.io
+              readOnly: true
+              volumeAttributes:
+                secretProviderClass: "{{ .Release.Name }}-aks-keyvault-secrets"
 
-       containers:
-          - name: {{ .Release.Name }}-gettasks-todo-microservice
-            image: k8acrregistry{{ .Values.environment }}.azurecr.io/{{ .Values.gettask.imagename }}:{{ .Values.gettask.imageversion }}
-            ports:
-              - containerPort: {{ .Values.gettask.targetPort }}
-            env:
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: db-password-secret
-                  key: DB_PASSWORD
+        containers:
+            - name: {{ .Release.Name }}-gettasks-todo-microservice
+              image: k8acrregistry{{ .Values.environment }}.azurecr.io/{{ .Values.gettask.imagename }}:{{ .Values.gettask.imageversion }}
+              ports:
+                - containerPort: {{ .Values.gettask.targetPort }}
+              env:
+              - name: DB_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: db-password-secret
+                    key: DB_PASSWORD
 
-            - name: CONNECTION_STRING
-              value: "Driver={ODBC Driver 18 for SQL Server};Server=tcp:{{ .Values.environment }}k8sqlserverc.database.windows.net,1433;Database={{ .Values.environment }}k8db;Uid=sqladmin;Pwd=$(DB_PASSWORD);Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
+              - name: CONNECTION_STRING
+                value: "Driver={ODBC Driver 18 for SQL Server};Server=tcp:{{ .Values.environment }}k8sqlserverc.database.windows.net,1433;Database={{ .Values.environment }}k8db;Uid=sqladmin;Pwd=$(DB_PASSWORD);Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
 
-            resources:
-              requests:
-                cpu: "100m"
-                memory: "128Mi"
-              limits:
-                cpu: "250m"
-                memory: "256Mi"
+              resources:
+                requests:
+                  cpu: "100m"
+                  memory: "128Mi"
+                limits:
+                  cpu: "250m"
+                  memory: "256Mi"
