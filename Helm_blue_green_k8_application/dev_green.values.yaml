@@ -1,7 +1,17 @@
 environment: dev
+
 ingress:
   enabled: false
   serviceactive: dev-green-todoapp
+
+
+keyvault:
+  name: "devtodakeyvault"  # Your keyvault name
+  tenantId: "90d26b91-2a7d-4998-a059-54dd93adebf6"  # Your tenant ID
+
+managedIdentity:
+  clientId: "4ee58007-0424-4bc0-bbd7-5030b1d69e28"  # From az identity list output
+
 microtodoui:
   port: 80
   targetPort: 80
