@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-gettasks-todo-microservice-pod
+  name: {{ .Release.Name }}-gettasks-todo-pod
   labels:
     app: {{ .Release.Name }}-gettasks-todo-microservice
 spec:
