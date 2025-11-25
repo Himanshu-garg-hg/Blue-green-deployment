@@ -20,13 +20,18 @@ spec:
             driver: secrets-store.csi.k8s.io
             readOnly: true
             volumeAttributes:
-              secretProviderClass: "{{ .Release.Name }}-aks-keyvault-secrets"
+              secretProviderClass: {{ .Release.Name }}-aks-keyvault-secrets
 
       containers:
         - name: {{ .Release.Name }}-gettasks-todo-microservice
           image: k8acrregistry{{ .Values.environment }}.azurecr.io/{{ .Values.gettask.imagename }}:{{ .Values.gettask.imageversion }}
           ports:
             - containerPort: {{ .Values.gettask.targetPort }}
+          
+          volumeMounts:
+            - name: secrets-store-inline
+              mountPath: "/mnt/secrets-store"
+              readOnly: true
 
           env:
             - name: DB_PASSWORD
