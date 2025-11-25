@@ -51,7 +51,14 @@ resource "azurerm_key_vault" "kv" {
 }
 
 
+resource "azurerm_role_assignment" "aks_sp_kv_role" {
+  principal_id = data.azuread_service_principal.sp.object_id
+  role_definition_name = "Key Vault Administratorr"
+  scope = azurerm_key_vault.kv.id
+}
+
 resource "azurerm_key_vault_secret" "kvsecret" {
+  depends_on = azurerm_role_assignment.aks_sp_kv_role
   name         = "SqlAdminPassword"
   value        = random_password.db_password.result
   key_vault_id = azurerm_key_vault.kv.id
@@ -95,3 +102,5 @@ resource "azurerm_role_assignment" "aks_kv_role" {
   role_definition_name = "Key Vault Secrets User"
   scope = azurerm_key_vault.kv.id
 }
+
+
