@@ -60,7 +60,7 @@ resource "azurerm_role_assignment" "aks_sp_kv_role" {
 
 resource "azurerm_key_vault_secret" "kvsecret" {
   depends_on = [azurerm_role_assignment.aks_sp_kv_role]
-  name         = "SqlDBPassword"
+  name         = "SqlAdminPassword"
   value        = random_password.db_password.result
   key_vault_id = azurerm_key_vault.kv.id
 }
