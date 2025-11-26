@@ -28,6 +28,11 @@ variable "key_vault_name" {
   type = string
 }
 
+
+variable "kv_secret_name" {
+  type = string
+  
+}
 # variable "client_id" {
 #   type = string
 # }

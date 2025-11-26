@@ -26,3 +26,8 @@ variable "k8_name" {
 variable "key_vault_name" {
   type = string
 }
+
+variable "kv_secret_name" {
+  type = string
+  
+}
