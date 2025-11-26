@@ -14,13 +14,13 @@ spec:
       labels:
         app: {{ .Release.Name }}-gettasks-todo-microservice
     spec:
-      # volumes:
-      #   - name: secrets-store-inline
-      #     csi:
-      #       driver: secrets-store.csi.k8s.io
-      #       readOnly: true
-      #       volumeAttributes:
-      #         secretProviderClass: {{ .Release.Name }}-aks-keyvault-secrets
+      volumes:
+        - name: secrets-store-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: {{ .Release.Name }}-aks-keyvault-secrets
 
       containers:
         - name: {{ .Release.Name }}-gettasks-todo-microservice
