@@ -102,16 +102,17 @@ resource "azurerm_role_assignment" "aks_acr_pull" {
 }
 
 
-resource "azurerm_role_assignment" "aks_kv_role" {
-  principal_id = azurerm_kubernetes_cluster.aks_cluster.kubelet_identity[0].object_id
+# Assign role to Kubelet Identity
+resource "azurerm_role_assignment" "kubelet_kv_access" {
+  principal_id         = azurerm_kubernetes_cluster.aks_cluster.kubelet_identity[0].object_id
   role_definition_name = "Key Vault Secrets User"
-  scope = azurerm_key_vault.kv.id
+  scope                = azurerm_key_vault.kv.id
 }
 
-
-# resource "azurerm_role_assignment" "aks_kv_role1" {
-#   principal_id = azurerm_kubernetes_cluster.aks_cluster.kubelet_identity[1].object_id
-#   role_definition_name = "Key Vault Secrets User"
-#   scope = azurerm_key_vault.kv.id
-# }
+# Assign role to Azure Key Vault Secrets Provider Identity
+resource "azurerm_role_assignment" "csi_kv_access" {
+  principal_id         = azurerm_kubernetes_cluster.aks_cluster.key_vault_secrets_provider[0].secret_identity.object_id
+  role_definition_name = "Key Vault Secrets User"
+  scope                = azurerm_key_vault.kv.id
+}
 
