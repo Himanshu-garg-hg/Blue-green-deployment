@@ -109,9 +109,9 @@ resource "azurerm_role_assignment" "aks_kv_role" {
 }
 
 
-resource "azurerm_role_assignment" "aks_kv_role1" {
-  principal_id = azurerm_kubernetes_cluster.aks_cluster.kubelet_identity[1].object_id
-  role_definition_name = "Key Vault Secrets User"
-  scope = azurerm_key_vault.kv.id
-}
+# resource "azurerm_role_assignment" "aks_kv_role1" {
+#   principal_id = azurerm_kubernetes_cluster.aks_cluster.kubelet_identity[1].object_id
+#   role_definition_name = "Key Vault Secrets User"
+#   scope = azurerm_key_vault.kv.id
+# }
 
