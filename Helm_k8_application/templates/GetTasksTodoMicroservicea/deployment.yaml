@@ -27,6 +27,12 @@ spec:
             image: k8acrregistry{{ .Values.environment }}.azurecr.io/{{ .Values.gettask.imagename }}:{{ .Values.gettask.imageversion }}
             ports:
               - containerPort: {{ .Values.gettask.targetPort }}
+
+            volumeMounts:
+            - name: secrets-store-inline
+              mountPath: "/mnt/secrets-store"
+              readOnly: true
+              
             env:
             - name: DB_PASSWORD
               valueFrom:

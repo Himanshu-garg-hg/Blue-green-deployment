@@ -111,7 +111,7 @@ resource "azurerm_role_assignment" "kubelet_kv_access" {
 
 # Assign role to Azure Key Vault Secrets Provider Identity
 resource "azurerm_role_assignment" "csi_kv_access" {
-  principal_id         = azurerm_kubernetes_cluster.aks_cluster.key_vault_secrets_provider[0].secret_identity.object_id
+  principal_id         = azurerm_kubernetes_cluster.aks_cluster.key_vault_secrets_provider.secret_identity.object_id
   role_definition_name = "Key Vault Secrets User"
   scope                = azurerm_key_vault.kv.id
 }
