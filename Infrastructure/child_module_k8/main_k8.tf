@@ -46,8 +46,8 @@ resource "azurerm_key_vault" "kv" {
   resource_group_name         = azurerm_resource_group.rg.name
   sku_name                    = "standard"
   tenant_id                   = data.azurerm_client_config.current.tenant_id
-  soft_delete_retention_days  = 7
-  purge_protection_enabled    = true
+  soft_delete_retention_days  = 0
+  purge_protection_enabled    = false
   rbac_authorization_enabled  = true
 }
 
@@ -60,7 +60,7 @@ resource "azurerm_role_assignment" "aks_sp_kv_role" {
 
 resource "azurerm_key_vault_secret" "kvsecret" {
   depends_on = [azurerm_role_assignment.aks_sp_kv_role]
-  name         = "SqlAdminPassword"
+  name         = "SqlDBPassword"
   value        = random_password.db_password.result
   key_vault_id = azurerm_key_vault.kv.id
 }
@@ -104,4 +104,10 @@ resource "azurerm_role_assignment" "aks_kv_role" {
   scope = azurerm_key_vault.kv.id
 }
 
+
+resource "azurerm_role_assignment" "aks_kv_role" {
+  principal_id = azurerm_kubernetes_cluster.aks_cluster.kubelet_identity[1].object_id
+  role_definition_name = "Key Vault Secrets User"
+  scope = azurerm_key_vault.kv.id
+}
 
