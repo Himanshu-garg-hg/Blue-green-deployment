@@ -14,13 +14,13 @@ spec:
        labels:
           app: {{ .Release.Name }}-deletetask-todo-microservice
      spec:
-       volumes:
-        - name: secrets-store-inline
-          csi:
-            driver: secrets-store.csi.k8s.io
-            readOnly: true
-            volumeAttributes:
-              secretProviderClass: {{ .Release.Name }}-aks-keyvault-secrets
+      #  volumes:
+      #   - name: secrets-store-inline
+      #     csi:
+      #       driver: secrets-store.csi.k8s.io
+      #       readOnly: true
+      #       volumeAttributes:
+      #         secretProviderClass: {{ .Release.Name }}-aks-keyvault-secrets
 
        containers:
           - name: {{ .Release.Name }}-deletetask-todo-microservice
@@ -28,10 +28,10 @@ spec:
             ports:
               - containerPort: {{ .Values.deletetask.targetPort }}
             
-            volumeMounts:
-            - name: secrets-store-inline
-              mountPath: "/mnt/secrets-store"
-              readOnly: true
+            # volumeMounts:
+            # - name: secrets-store-inline
+            #   mountPath: "/mnt/secrets-store"
+            #   readOnly: true
 
             env:
             - name: DB_PASSWORD
