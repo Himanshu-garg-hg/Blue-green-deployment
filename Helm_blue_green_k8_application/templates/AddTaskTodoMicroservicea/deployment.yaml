@@ -14,24 +14,24 @@ spec:
       labels:
         app: {{ .Release.Name }}-addtask-todo-microservice
     spec:
-      # volumes:
-      #   - name: secrets-store-inline
-      #     csi:
-      #       driver: secrets-store.csi.k8s.io
-      #       readOnly: true
-      #       volumeAttributes:
-      #         secretProviderClass: {{ .Release.Name }}-aks-keyvault-secrets
+      volumes:
+        - name: secrets-store-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: {{ .Release.Name }}-aks-keyvault-secrets
 
       containers:
       - name: {{ .Release.Name }}-addtask-todo-microservice
         image: k8acrregistry{{ .Values.environment }}.azurecr.io/{{ .Values.addtask.imagename }}:{{ .Values.addtask.imageversion }}
         ports:
         - containerPort: {{ .Values.addtask.targetPort }}
-        
-        # volumeMounts:
-        #     - name: secrets-store-inline
-        #       mountPath: "/mnt/secrets-store"
-        #       readOnly: true
+
+        volumeMounts:
+            - name: secrets-store-inline
+              mountPath: "/mnt/secrets-store"
+              readOnly: true
         env:
             - name: DB_PASSWORD
               valueFrom:
