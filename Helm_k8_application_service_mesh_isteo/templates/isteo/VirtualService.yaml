@@ -42,11 +42,11 @@ spec:
         subset: blue
         port:
           number: 80
-      weight: 90
+      weight: 100
     - destination:
         host: {{ .Release.Name }}-microtodo-ui-service
         subset: green
         port:
           number: 80
-      weight: 10
+      weight: 0
 {{- end }}
