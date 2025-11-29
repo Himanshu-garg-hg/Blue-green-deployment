@@ -1,18 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-deletetask-todo-pod
+  name: {{ .Release.Name }}-gettasks-todo-microservice-pod
   labels:
-    app: {{ .Release.Name }}-deletetask-todo-microservice
+    app: {{ .Release.Name }}-gettasks-todo-microservice
+    version: {{ .Values.serviceactive | default "blue" }}
 spec:
-   replicas: {{ .Values.deletetask.replicas }}
+   replicas: {{ .Values.gettask.replicas }}
    selector:
-      matchLabels:
-          app: {{ .Release.Name }}-deletetask-todo-microservice
+     matchLabels:
+        app: {{ .Release.Name }}-gettasks-todo-microservice
    template:
      metadata:
        labels:
-          app: {{ .Release.Name }}-deletetask-todo-microservice
+          app: {{ .Release.Name }}-gettasks-todo-microservice
+          version: {{ .Values.serviceactive | default "blue" }}
      spec:
        volumes:
         - name: secrets-store-inline
@@ -20,19 +22,19 @@ spec:
             driver: secrets-store.csi.k8s.io
             readOnly: true
             volumeAttributes:
-              secretProviderClass: {{ .Release.Name }}-aks-keyvault-secrets
+              secretProviderClass: "aks-keyvault-secrets"
 
        containers:
-          - name: {{ .Release.Name }}-deletetask-todo-microservice
-            image: k8acrregistry{{ .Values.environment }}.azurecr.io/{{ .Values.deletetask.imagename }}:{{ .Values.deletetask.imageversion }}
+          - name: {{ .Release.Name }}-gettasks-todo-microservice
+            image: k8acrregistry{{ .Values.environment }}.azurecr.io/{{ .Values.gettask.imagename }}:{{ .Values.gettask.imageversion }}
             ports:
-              - containerPort: {{ .Values.deletetask.targetPort }}
-            
+              - containerPort: {{ .Values.gettask.targetPort }}
+
             volumeMounts:
             - name: secrets-store-inline
               mountPath: "/mnt/secrets-store"
               readOnly: true
-
+              
             env:
             - name: DB_PASSWORD
               valueFrom:
@@ -49,4 +51,4 @@ spec:
                 memory: "128Mi"
               limits:
                 cpu: "250m"
-                memory: "256Mi" 
+                memory: "256Mi"

@@ -1,0 +1,15 @@
+{{- if .Values.createService }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-deletetask-todo-microservice-service
+  labels:
+    app: {{ .Release.Name }}-deletetask-todo-microservice
+spec:
+  selector:
+    app: {{ .Release.Name }}-deletetask-todo-microservice
+  ports:
+  - port: {{ .Values.deletetask.port }}
+    targetPort: {{ .Values.deletetask.targetPort }}
+  type: ClusterIP
+{{- end }}

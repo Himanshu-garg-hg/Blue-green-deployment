@@ -1,18 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-addtask-todo-pod
+  name: {{ .Release.Name }}-addtask-todo-microservice-pod
   labels:
     app: {{ .Release.Name }}-addtask-todo-microservice
 spec:
   selector:
     matchLabels:
       app: {{ .Release.Name }}-addtask-todo-microservice
+      version: {{ .Values.serviceactive | default "blue" }}
   replicas: {{ .Values.addtask.replicas }}
   template:
     metadata:
       labels:
         app: {{ .Release.Name }}-addtask-todo-microservice
+        version: {{ .Values.serviceactive | default "blue" }}
     spec:
       volumes:
         - name: secrets-store-inline
@@ -20,19 +22,19 @@ spec:
             driver: secrets-store.csi.k8s.io
             readOnly: true
             volumeAttributes:
-              secretProviderClass: {{ .Release.Name }}-aks-keyvault-secrets
-
+              secretProviderClass: "aks-keyvault-secrets"
+              
       containers:
       - name: {{ .Release.Name }}-addtask-todo-microservice
         image: k8acrregistry{{ .Values.environment }}.azurecr.io/{{ .Values.addtask.imagename }}:{{ .Values.addtask.imageversion }}
         ports:
         - containerPort: {{ .Values.addtask.targetPort }}
-
+        
         volumeMounts:
             - name: secrets-store-inline
               mountPath: "/mnt/secrets-store"
               readOnly: true
-              
+
         env:
             - name: DB_PASSWORD
               valueFrom:

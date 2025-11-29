@@ -1,0 +1,40 @@
+environment: dev
+createService: true
+createIstioResources: true
+serviceactive: blue 
+
+
+keyvault:
+  tenantId: "90d26b91-2a7d-4998-a059-54dd93adebf6"  # Your tenant ID
+
+managedIdentity:
+  clientId: "8b71cf54-482f-45ff-9b2e-9c7ff32c5abe"  # From az identity list output
+
+ingress: 
+  host: microtodo-ui.tangi.fun
+
+
+microtodoui:
+  port: 80
+  targetPort: 80
+  replicas: 2
+  imagename: microtodoui
+  imageversion: latest
+gettask:
+  port: 80
+  targetPort: 8000
+  replicas: 2
+  imagename: gettaskstodo
+  imageversion: latest
+deletetask:
+  port: 80
+  targetPort: 8000
+  replicas: 2
+  imagename: deletetasktodo
+  imageversion: latest
+addtask:
+  port: 80
+  targetPort: 8000
+  replicas: 2
+  imagename: addaaskaodo
+  imageversion: latest

@@ -1,0 +1,60 @@
+{{- if .Values.createIstioResources }}
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ .Release.Name }}-microtodo-virtualservice
+spec:
+  hosts:
+  - {{ .Values.ingress.host }}  #"microtodo-ui.tangi.fun"
+  gateways:
+  - istio-system/microtodo-gateway
+  http:
+  - match:
+    - uri:
+        prefix: "/api/gettasks"
+    route:
+    - destination:
+        host: {{ .Release.Name }}-gettasks-todo-microservice-service # your k8s service name
+        port:
+          number: 80
+  - match:
+    - uri:
+        prefix: "/api/addtasks"
+    route:
+    - destination:
+        host: {{ .Release.Name }}-addtask-todo-microservice-service
+        port:
+          number: 80
+  - match:
+    - uri:
+        prefix: "/api/deletetasks"
+    route:
+    - destination:
+        host: {{ .Release.Name }}-deletetask-todo-microservice-service
+        port:
+          number: 80
+  - match:
+    - uri:
+        prefix: "/"
+    route:
+    - destination:
+        host: {{ .Release.Name }}-microtodo-ui-service
+        port:
+          number: 80
+  - match:
+    - uri:
+        prefix: "/"
+    route:
+    - destination:
+        host: {{ .Release.Name }}-microtodo-ui-service
+        subset: blue
+        port:
+            number: 80
+        weight: 90
+    - destination:
+        host: {{ .Release.Name }}-microtodo-ui-service
+        subset: green
+        port:
+            number: 80
+        weight: 10
+{{- end }}

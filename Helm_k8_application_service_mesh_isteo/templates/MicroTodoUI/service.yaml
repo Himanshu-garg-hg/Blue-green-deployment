@@ -1,0 +1,16 @@
+{{- if .Values.createService }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-microtodo-ui-service
+  labels:
+    app: {{ .Release.Name }}-microtodo-ui
+spec:
+  type: ClusterIP
+  selector:
+    app: {{ .Release.Name }}-microtodo-ui
+  ports:
+    - protocol: TCP
+      port: {{ .Values.microtodoui.port }}
+      targetPort: {{ .Values.microtodoui.targetPort }}
+{{- end }}

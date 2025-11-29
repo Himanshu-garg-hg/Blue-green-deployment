@@ -1,0 +1,18 @@
+{{- if .Values.createIstioResources }}
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: {{ .Release.Name }}-microtodo-ui-destination
+spec:
+  host: {{ .Release.Name }}-microtodo-ui-service
+  subsets:
+  - name: blue
+    labels:
+      version: blue
+  - name: green
+    labels:
+      version: green
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+{{- end }}
