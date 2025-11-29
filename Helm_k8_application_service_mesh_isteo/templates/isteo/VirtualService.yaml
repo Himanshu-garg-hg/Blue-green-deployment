@@ -5,7 +5,7 @@ metadata:
   name: {{ .Release.Name }}-microtodo-virtualservice
 spec:
   hosts:
-  - {{ .Values.ingress.host }}  #"microtodo-ui.tangi.fun"
+  - {{ .Values.ingress.host }}
   gateways:
   - istio-system/microtodo-gateway
   http:
@@ -14,7 +14,7 @@ spec:
         prefix: "/api/gettasks"
     route:
     - destination:
-        host: {{ .Release.Name }}-gettasks-todo-microservice-service # your k8s service name
+        host: {{ .Release.Name }}-gettasks-todo-microservice-service
         port:
           number: 80
   - match:
@@ -41,12 +41,12 @@ spec:
         host: {{ .Release.Name }}-microtodo-ui-service
         subset: blue
         port:
-            number: 80
-        weight: 90
+          number: 80
+      weight: 90
     - destination:
         host: {{ .Release.Name }}-microtodo-ui-service
         subset: green
         port:
-            number: 80
-        weight: 10
+          number: 80
+      weight: 10
 {{- end }}
