@@ -39,14 +39,6 @@ spec:
     route:
     - destination:
         host: {{ .Release.Name }}-microtodo-ui-service
-        port:
-          number: 80
-  - match:
-    - uri:
-        prefix: "/"
-    route:
-    - destination:
-        host: {{ .Release.Name }}-microtodo-ui-service
         subset: blue
         port:
             number: 80
