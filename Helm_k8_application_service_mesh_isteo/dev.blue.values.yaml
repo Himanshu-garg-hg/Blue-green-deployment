@@ -17,24 +17,24 @@ ingress:
 microtodoui:
   port: 80
   targetPort: 80
-  replicas: 2
+  replicas: 1
   imagename: microtodoui
   imageversion: latest
 gettask:
   port: 80
   targetPort: 8000
-  replicas: 2
+  replicas: 1
   imagename: gettaskstodo
   imageversion: latest
 deletetask:
   port: 80
   targetPort: 8000
-  replicas: 2
+  replicas: 1
   imagename: deletetasktodo
   imageversion: latest
 addtask:
   port: 80
   targetPort: 8000
-  replicas: 2
+  replicas: 1
   imagename: addaaskaodo
   imageversion: latest
