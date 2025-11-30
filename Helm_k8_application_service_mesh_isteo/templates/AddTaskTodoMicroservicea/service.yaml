@@ -7,7 +7,7 @@ spec:
   selector:
     app: {{ .Release.Name }}-addtask-todo-microservice
   ports:
-  - port: {{ .Values.deletetask.port }}
+  - port: {{ .Values.addtask.port }}
     targetPort: {{ .Values.addtask.targetPort }}
   type: ClusterIP
 {{- end }}
