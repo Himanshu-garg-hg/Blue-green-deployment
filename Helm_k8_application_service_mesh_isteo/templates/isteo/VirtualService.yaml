@@ -137,7 +137,7 @@ spec:
         method:
           exact: "DELETE"
     rewrite:
-      uri: "/tasks"
+      uri: "/tasks/"
     route:
       - destination:
           host: {{ .Release.Name }}-deletetask-todo-microservice-service
