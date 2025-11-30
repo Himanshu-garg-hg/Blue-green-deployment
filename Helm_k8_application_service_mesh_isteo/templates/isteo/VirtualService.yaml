@@ -52,9 +52,6 @@
 # {{- end }}
 
 
-
-
-{{- if .Values.createIstioResources }}
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
@@ -66,10 +63,12 @@ spec:
   - istio-system/{{ .Release.Name }}-microtodo-gateway
   http:
 
-  # ------------------ GET TASKS ------------------
+  # ---------- GET TASKS ----------
   - match:
     - uri:
         prefix: "/api/tasks"
+      method:
+        exact: "GET"
     rewrite:
       uri: "/tasks"
     route:
@@ -78,10 +77,12 @@ spec:
         port:
           number: 80
 
-  # ------------------ CREATE TASK ------------------
+  # ---------- CREATE TASK ----------
   - match:
     - uri:
         prefix: "/api/tasks"
+      method:
+        exact: "POST"
     rewrite:
       uri: "/tasks"
     route:
@@ -90,10 +91,12 @@ spec:
         port:
           number: 80
 
-  # ------------------ DELETE TASK ------------------
+  # ---------- DELETE TASK ----------
   - match:
     - uri:
-        prefix: "/api/tasks/"
+        regex: "/api/tasks/.*"
+      method:
+        exact: "DELETE"
     rewrite:
       uri: "/tasks/"
     route:
@@ -102,7 +105,7 @@ spec:
         port:
           number: 80
 
-  # ------------------ FRONTEND BLUE/GREEN ------------------
+  # ---------- FRONTEND BLUE/GREEN ----------
   - match:
     - uri:
         prefix: "/"
@@ -119,4 +122,3 @@ spec:
         port:
           number: 80
       weight: 10
-{{- end }}
