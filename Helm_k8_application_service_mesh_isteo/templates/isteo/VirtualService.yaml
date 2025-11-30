@@ -89,6 +89,18 @@ spec:
   gateways:
   - istio-system/{{ .Release.Name }}-microtodo-gateway
   http:
+
+   # INIT: Call "/" of backend to create DB table
+  - match:
+      - uri:
+          exact: "/api/init"
+    rewrite:
+      uri: "/"
+    route:
+      - destination:
+          host: {{ .Release.Name }}-gettasks-todo-microservice-service
+          port:
+            number: 80
   
   # GET TASKS — /api/tasks
   - match:

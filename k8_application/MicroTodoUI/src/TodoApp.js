@@ -3,25 +3,26 @@ import axios from 'axios';
 import { Button, TextField, Container, Typography, Grid, Card, CardContent, IconButton } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import { Box } from '@mui/material';
-import config from './config'; // Import the config file with environment variable support
-
-// //Use the config to define API URLs
-// const GET_TASKS_API_BASE_URL = "http://gettask.tangi.fun";
-// const DELETE_TASK_API_BASE_URL = "http://deletetask.tangi.fun";
-// const CREATE_TASK_API_BASE_URL = "http://addtask.tangi.fun";
+import config from './config';
 
 const GET_TASKS_API_BASE_URL = "/api";
 const CREATE_TASK_API_BASE_URL = "/api";
 const DELETE_TASK_API_BASE_URL = "/api";
 
-
-
 const backgroundImage = process.env.PUBLIC_URL + '/background.jpg';
-
 
 function TodoApp() {
     const [tasks, setTasks] = useState([]);
     const [newTask, setNewTask] = useState({ title: '', description: '' });
+
+    const initDB = async () => {
+        try {
+            await axios.get(`/api/init`);
+            console.log("DB Initialization called");
+        } catch (error) {
+            console.log("DB Init endpoint error (ignored)", error);
+        }
+    };
 
     const fetchTasks = async () => {
         try {
@@ -52,16 +53,17 @@ function TodoApp() {
     };
 
     useEffect(() => {
-        fetchTasks();
+        initDB();      // 🔥 call DB initialization
+        fetchTasks();  // load tasks
     }, []);
 
     return (
         <Box
             style={{
-                backgroundImage: `url(${backgroundImage})`, // Use the imported variable
+                backgroundImage: `url(${backgroundImage})`,
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
-                backgroundAttachment: 'fixed', // Optional, for a fixed background
+                backgroundAttachment: 'fixed',
                 minHeight: '100vh',
             }}
         >
@@ -70,14 +72,15 @@ function TodoApp() {
                     variant="h3"
                     gutterBottom
                     style={{
-                        textAlign: 'center', // Center align text
-                        color: 'white', // Set text color to white
+                        textAlign: 'center',
+                        color: 'white',
                         margin: '8px',
                     }}
                 >
                     <img src="/devopsinsiderslogo.png" alt="My Logo" />
                     ToDo App
                 </Typography>
+
                 <div>
                     <TextField
                         label="Title"
@@ -88,19 +91,9 @@ function TodoApp() {
                         margin="normal"
                         onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
                         InputProps={{
-                            style: {
-                                color: 'white',       // Set text color to white
-                                borderColor: 'white',  // Set border color to white
-                                '&:hover': {
-                                    borderColor: 'white', // Set border color to white on hover
-                                },
-                            },
+                            style: { color: 'white' }
                         }}
-                        InputLabelProps={{
-                            style: {
-                                color: 'white',       // Set label text color to white
-                            },
-                        }}
+                        InputLabelProps={{ style: { color: 'white' } }}
                     />
 
                     <TextField
@@ -113,19 +106,9 @@ function TodoApp() {
                         margin="normal"
                         onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
                         InputProps={{
-                            style: {
-                                color: 'white',           // Set text color to white
-                                borderColor: 'white',      // Set border color to white
-                                '&:hover': {
-                                    borderColor: 'white',    // Set border color to white on hover
-                                },
-                            },
+                            style: { color: 'white' }
                         }}
-                        InputLabelProps={{
-                            style: {
-                                color: 'white',           // Set label text color to white
-                            },
-                        }}
+                        InputLabelProps={{ style: { color: 'white' } }}
                     />
 
                     <Button variant="contained" color="primary" onClick={createTask} style={{ margin: '8px' }}>
@@ -133,33 +116,31 @@ function TodoApp() {
                     </Button>
                 </div>
 
-                <div>
-                    <Typography
-                        variant="h4"
-                        gutterBottom
-                        style={{
-                            textAlign: 'center', // Center align text
-                            color: 'white', // Set text color to white
-                            margin: '15px',
-                        }}
-                    >
-                        Existing Tasks
-                    </Typography>
+                <Typography
+                    variant="h4"
+                    gutterBottom
+                    style={{
+                        textAlign: 'center',
+                        color: 'white',
+                        margin: '15px',
+                    }}
+                >
+                    Existing Tasks
+                </Typography>
 
-                    {tasks.map((task) => (
-                        <Box key={task.ID} mb={2}>
-                            <Card key={task.ID} variant="elevation">
-                                <CardContent>
-                                    <Typography variant="h6">{task.Title}</Typography>
-                                    <Typography variant="body2">{task.Description}</Typography>
-                                    <IconButton onClick={() => deleteTask(task.ID)} color="secondary">
-                                        <Delete />
-                                    </IconButton>
-                                </CardContent>
-                            </Card>
-                        </Box>
-                    ))}
-                </div>
+                {tasks.map((task) => (
+                    <Box key={task.ID} mb={2}>
+                        <Card variant="elevation">
+                            <CardContent>
+                                <Typography variant="h6">{task.Title}</Typography>
+                                <Typography variant="body2">{task.Description}</Typography>
+                                <IconButton onClick={() => deleteTask(task.ID)} color="secondary">
+                                    <Delete />
+                                </IconButton>
+                            </CardContent>
+                        </Card>
+                    </Box>
+                ))}
             </Container>
         </Box>
     );
