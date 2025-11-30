@@ -8,6 +8,7 @@ sleep 30
 kubectl get svc -n argocd argocd-server -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
 sleep 10
 ### TO GET password
+echo -e "\nARGO CD initial admin password:"
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 --decode
-
+echo
 ## user name --> admin

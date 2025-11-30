@@ -1,5 +1,12 @@
 Service Mesh:
 
+
+Architecture -->
+
+Internet → Istio IngressGateway (LoadBalancer) → Istio Gateway → VirtualService → Services (blue/green)
+
+
+
 1. What is service mesh  -->  It used to control traffic management inside kubernetes cluster
 2. Why we use service mesh --> As all pod/service can connect with each other then why service mensh required.
                            --> Reason is Manual TLS ( Feature of service mensh). Means it secure serive to service connection
