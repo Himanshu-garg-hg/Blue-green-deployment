@@ -7,7 +7,7 @@ spec:
   hosts:
   - {{ .Values.ingress.host }}
   gateways:
-  - istio-system/microtodo-gateway
+  - istio-system/{{ .Release.Name }}-microtodo-gateway
   http:
   - match:
     - uri:
