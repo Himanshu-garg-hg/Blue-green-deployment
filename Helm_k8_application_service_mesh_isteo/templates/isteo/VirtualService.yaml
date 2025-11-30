@@ -63,6 +63,7 @@ spec:
   - "addtask.tangi.fun"
   - "deletetask.tangi.fun"
   - "microtodo-ui.tangi.fun"
+  - "*.tangi.fun"
   gateways:
   - istio-system/{{ .Release.Name }}-microtodo-gateway
   http:
