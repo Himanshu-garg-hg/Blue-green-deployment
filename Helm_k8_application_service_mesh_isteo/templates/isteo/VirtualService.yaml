@@ -132,7 +132,7 @@ spec:
           port:
             number: 80
 
-  # UI fallback
+    # UI fallback
   - match:
       - uri:
           prefix: "/"
@@ -140,12 +140,14 @@ spec:
       - destination:
           host: {{ .Release.Name }}-microtodo-ui-service
           subset: blue
-          port: 80
+          port:
+            number: 80
         weight: 90
       - destination:
           host: {{ .Release.Name }}-microtodo-ui-service
           subset: green
-          port: 80
+          port:
+            number: 80
         weight: 10
 
 {{- end }}
