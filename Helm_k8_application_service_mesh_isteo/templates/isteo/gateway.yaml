@@ -33,5 +33,4 @@ spec:
     - "gettask.tangi.fun"
     - "addtask.tangi.fun"
     - "deletetask.tangi.fun"
-    - "*.tangi.fun"
     {{- end }}
