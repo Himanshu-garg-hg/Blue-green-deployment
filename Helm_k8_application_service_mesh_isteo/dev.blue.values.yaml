@@ -8,7 +8,7 @@ keyvault:
   tenantId: "90d26b91-2a7d-4998-a059-54dd93adebf6"  # Your tenant ID
 
 managedIdentity:
-  clientId: "8b71cf54-482f-45ff-9b2e-9c7ff32c5abe"  # From az identity list output
+  clientId: "eda7c3ea-346a-457b-a524-91a0c062bd86"  # From az identity list output
 
 ingress: 
   host: microtodo-ui.tangi.fun
