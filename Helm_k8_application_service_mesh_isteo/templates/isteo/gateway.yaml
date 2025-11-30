@@ -15,7 +15,7 @@
 #     hosts:
 #     - {{ .Values.ingress.host }}
 
-// filepath: c:\Users\HP\Documents\Project\Blue-green-deployment\Helm_k8_application_service_mesh_isteo\templates\isteo\gateway.yaml
+# // filepath: c:\Users\HP\Documents\Project\Blue-green-deployment\Helm_k8_application_service_mesh_isteo\templates\isteo\gateway.yaml
 apiVersion: networking.istio.io/v1beta1
 kind: Gateway
 metadata:
