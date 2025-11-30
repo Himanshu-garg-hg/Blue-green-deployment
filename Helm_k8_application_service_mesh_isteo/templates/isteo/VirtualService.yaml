@@ -52,53 +52,50 @@
 # {{- end }}
 
 
+
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: {{ .Release.Name }}-microtodo-virtualservice
 spec:
   hosts:
-  - {{ .Values.ingress.host }}
+  - "gettask.tangi.fun"
+  - "addtask.tangi.fun"
+  - "deletetask.tangi.fun"
+  - "microtodo-ui.tangi.fun"
   gateways:
   - istio-system/{{ .Release.Name }}-microtodo-gateway
   http:
-
-  # ---------- GET TASKS ----------
+  # ---------- GET TASKS SERVICE ----------
   - match:
     - uri:
-        prefix: "/api/tasks"
-      method:
-        exact: "GET"
-    rewrite:
-      uri: "/tasks"
+        prefix: "/"
+      authority:
+        exact: "gettask.tangi.fun"
     route:
     - destination:
         host: {{ .Release.Name }}-gettasks-todo-microservice-service
         port:
           number: 80
 
-  # ---------- CREATE TASK ----------
+  # ---------- ADD TASKS SERVICE ----------
   - match:
     - uri:
-        prefix: "/api/tasks"
-      method:
-        exact: "POST"
-    rewrite:
-      uri: "/tasks"
+        prefix: "/"
+      authority:
+        exact: "addtask.tangi.fun"
     route:
     - destination:
         host: {{ .Release.Name }}-addtask-todo-microservice-service
         port:
           number: 80
 
-  # ---------- DELETE TASK ----------
+  # ---------- DELETE TASKS SERVICE ----------
   - match:
     - uri:
-        regex: "/api/tasks/.*"
-      method:
-        exact: "DELETE"
-    rewrite:
-      uri: "/tasks/"
+        prefix: "/"
+      authority:
+        exact: "deletetask.tangi.fun"
     route:
     - destination:
         host: {{ .Release.Name }}-deletetask-todo-microservice-service
@@ -107,8 +104,8 @@ spec:
 
   # ---------- FRONTEND BLUE/GREEN ----------
   - match:
-    - uri:
-        prefix: "/"
+    - authority:
+        exact: "microtodo-ui.tangi.fun"
     route:
     - destination:
         host: {{ .Release.Name }}-microtodo-ui-service

@@ -1,9 +1,25 @@
 {{- if .Values.createIstioResources }}
+# apiVersion: networking.istio.io/v1beta1
+# kind: Gateway
+# metadata:
+#   name: {{ .Release.Name }}-microtodo-gateway
+#   namespace: istio-system
+# spec:
+#   selector:
+#     istio: ingressgateway
+#   servers:
+#   - port:
+#       number: 80
+#       name: http
+#       protocol: HTTP
+#     hosts:
+#     - {{ .Values.ingress.host }}
+
+// filepath: c:\Users\HP\Documents\Project\Blue-green-deployment\Helm_k8_application_service_mesh_isteo\templates\isteo\gateway.yaml
 apiVersion: networking.istio.io/v1beta1
 kind: Gateway
 metadata:
   name: {{ .Release.Name }}-microtodo-gateway
-  namespace: istio-system
 spec:
   selector:
     istio: ingressgateway
@@ -13,5 +29,9 @@ spec:
       name: http
       protocol: HTTP
     hosts:
-    - {{ .Values.ingress.host }}
+    - "microtodo-ui.tangi.fun"
+    - "gettask.tangi.fun"
+    - "addtask.tangi.fun"
+    - "deletetask.tangi.fun"
+    - "*.tangi.fun"
     {{- end }}
