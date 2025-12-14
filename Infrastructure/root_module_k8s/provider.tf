@@ -1,5 +1,5 @@
 terraform {
-  required_version = "1.12"
+  required_version = "1.9.0"
   backend "azurerm" {
     storage_account_name = "donotdeletestorage"
     resource_group_name  = "donotdelete"
