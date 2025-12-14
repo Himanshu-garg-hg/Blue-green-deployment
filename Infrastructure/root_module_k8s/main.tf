@@ -1,3 +1,8 @@
+ephemeral "random_password" "db_password" {
+  length           = 16
+  special          = true
+  override_special = "_%@"
+}
 
 module "new_k8s" {
   source              = "../child_module_k8"
@@ -9,4 +14,5 @@ module "new_k8s" {
   k8_name             = var.k8_name
   key_vault_name      = var.key_vault_name
   kv_secret_name      = var.kv_secret_name
+  db_password         = ephemeral.random_password.db_password.result
 }

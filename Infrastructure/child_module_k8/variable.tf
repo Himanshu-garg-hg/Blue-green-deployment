@@ -31,3 +31,7 @@ variable "kv_secret_name" {
   type = string
 
 }
+
+
+variable "db_password" {
+}
