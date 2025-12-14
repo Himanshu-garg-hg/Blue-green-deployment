@@ -29,5 +29,5 @@ variable "key_vault_name" {
 
 variable "kv_secret_name" {
   type = string
-  
+
 }

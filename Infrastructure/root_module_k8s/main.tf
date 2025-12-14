@@ -8,5 +8,5 @@ module "new_k8s" {
   database_name       = var.database_name
   k8_name             = var.k8_name
   key_vault_name      = var.key_vault_name
-  kv_secret_name = var.kv_secret_name
+  kv_secret_name      = var.kv_secret_name
 }

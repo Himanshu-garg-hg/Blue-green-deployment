@@ -1,7 +1,6 @@
 Service Mesh:
 
-
-Architecture -->
+Architecture -
 
 Internet → Istio IngressGateway (LoadBalancer) → Istio Gateway → VirtualService → Services (blue/green)
 
@@ -52,6 +51,8 @@ Internet → Istio IngressGateway (LoadBalancer) → Istio Gateway → VirtualSe
      . mTLS
 
 
+
+To Run kiali
 
 
 ----------------------------------------------------------------------------------------------------------------------

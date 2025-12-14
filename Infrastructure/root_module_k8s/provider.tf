@@ -1,9 +1,10 @@
 terraform {
+  required_version = "1.12"
   backend "azurerm" {
     storage_account_name = "donotdeletestorage"
-    resource_group_name = "donotdelete"
-    container_name = "donotdeletecontainer"
-    key = "donotdelte.tfstate"
+    resource_group_name  = "donotdelete"
+    container_name       = "donotdeletecontainer"
+    key                  = "donotdeltek8.tfstate"
   }
   required_providers {
     azurerm = {
@@ -11,7 +12,7 @@ terraform {
       version = "4.49.0"
     }
   }
-  
+
 }
 
 provider "azurerm" {

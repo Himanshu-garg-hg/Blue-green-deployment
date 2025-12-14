@@ -17,7 +17,7 @@ resource "azurerm_mssql_server" "server" {
   resource_group_name          = azurerm_resource_group.rg.name
   version                      = "12.0"
   administrator_login          = "sqladmin"
-  administrator_login_password = random_password.db_password.result
+  administrator_login_password = ephemeral.random_password.db_password.result
 }
 
 
@@ -41,36 +41,41 @@ resource "azurerm_mssql_database" "database" {
 
 
 resource "azurerm_key_vault" "kv" {
-  name                        = var.key_vault_name
-  location                    = azurerm_resource_group.rg.location
-  resource_group_name         = azurerm_resource_group.rg.name
-  sku_name                    = "standard"
-  tenant_id                   = data.azurerm_client_config.current.tenant_id
-  soft_delete_retention_days  = 7
-  purge_protection_enabled    = false
-  rbac_authorization_enabled  = true
+  name                       = var.key_vault_name
+  location                   = azurerm_resource_group.rg.location
+  resource_group_name        = azurerm_resource_group.rg.name
+  sku_name                   = "standard"
+  tenant_id                  = data.azurerm_client_config.current.tenant_id
+  soft_delete_retention_days = 7
+  purge_protection_enabled   = false
+  rbac_authorization_enabled = true
 }
 
 
 resource "azurerm_role_assignment" "aks_sp_kv_role" {
-  principal_id = data.azuread_service_principal.sp.object_id
+  principal_id         = data.azuread_service_principal.sp.object_id
   role_definition_name = "Key Vault Administrator"
-  scope = azurerm_key_vault.kv.id
+  scope                = azurerm_key_vault.kv.id
 }
 
 resource "azurerm_key_vault_secret" "kvsecret" {
-  depends_on = [azurerm_role_assignment.aks_sp_kv_role]
+  depends_on   = [azurerm_role_assignment.aks_sp_kv_role]
   name         = var.kv_secret_name
-  value        = random_password.db_password.result
+  value        = ephemeral.random_password.db_password.result
   key_vault_id = azurerm_key_vault.kv.id
 }
 
-resource "random_password" "db_password" {
+# resource "random_password" "db_password" {
+#   length           = 16
+#   special          = true
+#   override_special = "_%@"
+# }
+
+ephemeral "random_password" "db_password" {
   length           = 16
   special          = true
   override_special = "_%@"
 }
-
 
 resource "azurerm_kubernetes_cluster" "aks_cluster" {
   name                = var.k8_name
