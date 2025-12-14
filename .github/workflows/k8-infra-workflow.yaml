@@ -36,7 +36,7 @@ jobs:
           tenant-id: "90d26b91-2a7d-4998-a059-54dd93adebf6"
           subscription-id: "651a708a-a61f-48a6-8006-0d3a0036a680"
 
-      - name: Terraform Init
+      - name: Terraform Init --upgrade
         working-directory: ./Infrastructure/root_module_k8s
         env:
           ARM_CLIENT_ID: "23604f03-61da-4f4c-a41e-76f2b84f5e09"
