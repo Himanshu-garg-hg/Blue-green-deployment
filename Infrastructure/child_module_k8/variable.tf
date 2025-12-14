@@ -34,4 +34,7 @@ variable "kv_secret_name" {
 
 
 variable "db_password" {
+  type        = string
+  description = "Database password from ephemeral resource"
+  sensitive   = true
 }
