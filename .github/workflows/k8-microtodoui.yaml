@@ -22,6 +22,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
+    - name: secret scanning
+      uses: gitleaks/gitleaks-action@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Set up Docker
       uses: docker/setup-docker-action@v4
 
@@ -34,31 +39,6 @@ jobs:
         client-id: "23604f03-61da-4f4c-a41e-76f2b84f5e09"
         tenant-id: "90d26b91-2a7d-4998-a059-54dd93adebf6"
         subscription-id: "651a708a-a61f-48a6-8006-0d3a0036a680"
-
-
-    # - name: enable agic feature
-    #   run: |
-    #     echo "Selected env: ${{ github.event.inputs.env }}"
-    #     case "${{ github.event.inputs.env }}" in
-    #       dev)
-    #         SUBNET_CIDR="10.224.0.0/24"
-    #         ;;
-    #       qa)
-    #         SUBNET_CIDR="10.225.0.0/24"
-    #         ;;
-    #       prod)
-    #         SUBNET_CIDR="10.230.10.0/24"
-    #         ;;
-    #       *)
-    #         echo "Unknown environment: ${{ github.event.inputs.env }}"; exit 1
-    #         ;;
-    #     esac
-    #     echo "Using subnet CIDR: $SUBNET_CIDR"
-    #     az aks enable-addons \
-    #       --resource-group "${{ github.event.inputs.env }}rg-k8s-infra" \
-    #       --name "${{ github.event.inputs.env }}todo-aks-cluster" \
-    #       --addons ingress-appgw \
-    #       --appgw-subnet-cidr "$SUBNET_CIDR"  
 
     - name: login to ACR
       run: |
