@@ -16,7 +16,7 @@ permissions:
   id-token: write
 
 jobs:
-  Build-and-push-image-acr:
+  scanning:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -26,7 +26,16 @@ jobs:
       uses: gitleaks/gitleaks-action@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    # - name: sonar qube scanning(SAST)
+    #   uses: SonarSource/sonarqube-scan-action@master
+    #   env:
+    #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
+  build_and_push:
+    runs-on: ubuntu-latest
+    needs: scanning
+    steps:
     - name: Set up Docker
       uses: docker/setup-docker-action@v4
 
@@ -44,12 +53,22 @@ jobs:
       run: |
         az acr login --name k8acrregistry${{ github.event.inputs.env}}
 
-    - name: Build and Push Image to ACR
-      uses: docker/build-push-action@v4
+    # - name: Build and Push Image to ACR
+    #   uses: docker/build-push-action@v4
+    #   with:
+    #     context: ./k8_application/MicroTodoUI
+    #     push: true
+    #     tags: k8acrregistry${{ github.event.inputs.env}}.azurecr.io/microtodoui:latest
+
+    - name: Build image
+      run: |
+        docker build -t microtodoui:latest ./k8_application/MicroTodoUI
+
+    - name: trivy scan
+      uses: lazy-actions/gitrivy@v3
       with:
-        context: ./k8_application/MicroTodoUI
-        push: true
-        tags: k8acrregistry${{ github.event.inputs.env}}.azurecr.io/microtodoui:latest
+        token: ${{ secrets.GITHUB_TOKEN }}
+        image: microtodoui:latest
 
     # - name: Deploy to Kubernetes Cluster
     #   uses: azure/aks-set-context@v2
