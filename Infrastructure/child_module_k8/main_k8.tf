@@ -17,7 +17,7 @@ resource "azurerm_mssql_server" "server" {
   resource_group_name          = azurerm_resource_group.rg.name
   version                      = "12.0"
   administrator_login          = "sqladmin"
-  administrator_login_password = var.db_password
+  administrator_login_password = random_password.db_password.result
 }
 
 
@@ -61,15 +61,15 @@ resource "azurerm_role_assignment" "aks_sp_kv_role" {
 resource "azurerm_key_vault_secret" "kvsecret" {
   depends_on   = [azurerm_role_assignment.aks_sp_kv_role]
   name         = var.kv_secret_name
-  value        = var.db_password
+  value        = random_password.db_password.result
   key_vault_id = azurerm_key_vault.kv.id
 }
 
-# resource "random_password" "db_password" {
-#   length           = 16
-#   special          = true
-#   override_special = "_%@"
-# }
+resource "random_password" "db_password" {
+  length           = 16
+  special          = true
+  override_special = "_%@"
+}
 
 
 resource "azurerm_kubernetes_cluster" "aks_cluster" {
