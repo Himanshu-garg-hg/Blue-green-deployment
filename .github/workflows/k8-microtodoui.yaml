@@ -62,7 +62,7 @@ jobs:
 
     - name: Build image
       run: |
-        docker build -t microtodoui:latest ./k8_application/MicroTodoUI
+        docker build -t microtodoui:latest ../../k8_application/MicroTodoUI
 
     - name: trivy scan
       uses: lazy-actions/gitrivy@v3
