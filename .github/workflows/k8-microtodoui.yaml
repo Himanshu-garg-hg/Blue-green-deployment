@@ -44,9 +44,10 @@ jobs:
       
     - name: retire scanning used for frontend dependencies
       run: |
+        
         npm install -g retire
         cd ./k8_application/MicroTodoUI
-        npn install
+        npm install
         retire --outputformat cyclonedx 
 
 
