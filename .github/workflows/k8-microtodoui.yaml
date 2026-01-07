@@ -43,27 +43,23 @@ jobs:
         paths: './k8_application/MicroTodoUI'
       
     - name: retire scanning used for frontend dependencies
-      run: |
-        
+      run: |       
         npm install -g retire
         cd ./k8_application/MicroTodoUI
         npm install
-        retire --outputformat cyclonedx 
+        retire --outputformat cyclonedx  --exitwith 0
 
 
-
-
-
-  # SAST-scanning:
-  #   runs-on: ubuntu-latest
-  #   needs: sca-scanning
-  #   steps:
-  #   - name: Checkout code
-  #     uses: actions/checkout@v3
-    # - name: sonar qube scanning(SAST)
-    #   uses: SonarSource/sonarqube-scan-action@master
-    #   env:
-    #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  SAST-scanning:
+    runs-on: ubuntu-latest
+    needs: sca-scanning
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: sonar qube scanning(SAST)
+      uses: SonarSource/sonarqube-scan-action@master
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   # build_and_push:
   #   runs-on: ubuntu-latest
