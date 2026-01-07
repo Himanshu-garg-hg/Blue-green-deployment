@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: microtodo-ui
+  name: microtodo-ui-deployment
   labels:
     app: microtodo-ui
 spec:
@@ -11,11 +11,12 @@ spec:
         app: microtodo-ui
    template:
      metadata:
+       name: microtodo-ui-pod
        labels:
          app: microtodo-ui
      spec:
        containers:
-         - name: microtodo-ui-pod
+         - name: microtodo-ui-container
            image: k8acrregistrydev.azurecr.io/microtodoui:latest
            ports:
              - containerPort: 80

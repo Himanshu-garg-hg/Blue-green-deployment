@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deletetask-todo
+  name: deletetask-todo-microservice-deployment
   labels:
     app: deletetask-todo-microservice
 spec:
@@ -11,11 +11,12 @@ spec:
           app: deletetask-todo-microservice
    template:
      metadata:
+       name: deletetask-todo-microservice-pod
        labels:
           app: deletetask-todo-microservice
      spec:
        containers:
-          - name: deletetask-todo-microservice-pod
+          - name: deletetask-todo-microservice-container
             image: k8acrregistrydev.azurecr.io/deletetasktodo:latest
             ports:
               - containerPort: 8000

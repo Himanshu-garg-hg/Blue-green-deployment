@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: addtask-todo-microservice
+  name: addtask-todo-microservice-deployment
   labels:
     app: addtask-todo-microservice
 spec:
@@ -11,11 +11,12 @@ spec:
   replicas: 2
   template:
     metadata:
+      name: addtask-todo-microservice-pod
       labels:
         app: addtask-todo-microservice
     spec:
       containers:
-      - name: addtask-todo-microservice-pod
+      - name: addtask-todo-microservice-container
         image: k8acrregistrydev.azurecr.io/addaaskaodo:latest
         env:
         - name: CONNECTION_STRING

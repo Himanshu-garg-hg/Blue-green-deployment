@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gettasks-todo-microservice
+  name: gettasks-todo-microservice-deployment
   labels:
     app: gettasks-todo-microservice
 spec:
@@ -11,11 +11,12 @@ spec:
         app: gettasks-todo-microservice
    template:
      metadata:
+       name: gettasks-todo-microservice-pod
        labels:
           app: gettasks-todo-microservice
      spec:
        containers:
-          - name: gettasks-todo-microservice-pod
+          - name: gettasks-todo-microservice-container
             image: k8acrregistrydev.azurecr.io/gettaskstodo:latest
             ports:
               - containerPort: 8000
