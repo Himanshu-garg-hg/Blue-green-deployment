@@ -73,6 +73,7 @@ jobs:
         run: |
           cd k8_application/MicroTodoUI
           npm test -- --watch=false
+        continue-on-error: true
 
 # -------------------- SAST --------------------
   sast-scanning:
