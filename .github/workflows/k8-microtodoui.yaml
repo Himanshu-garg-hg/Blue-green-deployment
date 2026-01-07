@@ -1,4 +1,5 @@
 name: Micro-todoui-k8s-deploy
+
 on: 
   workflow_dispatch:
     inputs:
@@ -7,9 +8,9 @@ on:
         required: true
         type: choice
         options:
-          - 'dev'
-          - 'qa'
-          - 'prod'
+          - dev
+          - qa
+          - prod
 
 permissions:
   contents: read
@@ -17,127 +18,165 @@ permissions:
 
 jobs:
 
+# -------------------- SECRET SCANNING --------------------
   secret-scanning:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: secret scanning
-      uses: gitleaks/gitleaks-action@v2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Gitleaks Secret Scanning
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+# -------------------- SCA (DEPENDENCY) --------------------
   sca-scanning:
     runs-on: ubuntu-latest
     needs: secret-scanning
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-    
-    - name: nodejs linting scanning - Biome
-      run: |
-        cd ./k8_application/MicroTodoUI
-        npm install --save-dev --save-exact @biomejs/biome
-        npx @biomejs/biome ci
-      continue-on-error: true
+      - uses: actions/checkout@v3
+
+      - name: Biome Linting
+        run: |
+          cd k8_application/MicroTodoUI
+          npm install --save-dev --save-exact @biomejs/biome
+          npx @biomejs/biome ci
+
+      - name: RetireJS Dependency Scan
+        run: |
+          npm install -g retire
+          cd k8_application/MicroTodoUI
+          npm install
+          retire --exitwith 0
 
 
-    - name: Retire - scanning used for frontend dependencies
-      run: |       
-        npm install -g retire
-        cd ./k8_application/MicroTodoUI
-        npm install
-        retire --outputformat cyclonedx  --exitwith 0
+# -------------------- Unit Testing --------------------
 
-
-  SAST-scanning:
+  unit-testing:
     runs-on: ubuntu-latest
     needs: sca-scanning
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: sonar qube scanning(SAST)
-      uses: SonarSource/sonarqube-scan-action@master
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      with:
-        projectBaseDir: ./k8_application/MicroTodoUI
-    
-    - name: sonar qube quality gate status
-      id: sonarqube-quality-gate-check
-      uses: SonarSource/sonarqube-quality-gate-action@master
-      with:
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install Dependencies
+        run: |
+          cd k8_application/MicroTodoUI
+          npm install
+
+      - name: Run Unit Tests
+        run: |
+          cd k8_application/MicroTodoUI
+          npm test -- --watch=false
+
+# -------------------- SAST --------------------
+  sast-scanning:
+    runs-on: ubuntu-latest
+    needs: sca-scanning
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarqube-scan-action@master
+        with:
+          projectBaseDir: ./k8_application/MicroTodoUI
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: SonarCloud Quality Gate
+        uses: SonarSource/sonarqube-quality-gate-action@master
+        with:
           pollingTimeoutSec: 600
           scanMetadataReportFile: k8_application/MicroTodoUI/.scannerwork/report-task.txt
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-    - name: "Example show SonarQube Quality Gate Status value"
-      run: echo "The Quality Gate status is ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
+# -------------------- BUILD + IMAGE SECURITY --------------------
+  ci-build_scan_push:
+    runs-on: ubuntu-latest
+    needs: sast-scanning
+    steps:
+      - uses: actions/checkout@v3
 
+      - uses: docker/setup-qemu-action@v2
+      - uses: docker/setup-docker-action@v4
 
-  # build_and_push:
-  #   runs-on: ubuntu-latest
-  #   needs: scanning
-  #   steps:
+      - name: Azure Login (OIDC)
+        uses: azure/login@v1
+        with:
+          client-id: "23604f03-61da-4f4c-a41e-76f2b84f5e09"
+          tenant-id: "90d26b91-2a7d-4998-a059-54dd93adebf6"
+          subscription-id: "651a708a-a61f-48a6-8006-0d3a0036a680"
 
-  #   - name: Checkout code
-  #     uses: actions/checkout@v3
+      - name: Login to ACR
+        run: |
+          az acr login --name k8acrregistry${{ github.event.inputs.env }}
 
-  #   - name: Set up Docker
-  #     uses: docker/setup-docker-action@v4
+      - name: Build Docker Image (Single Build)
+        uses: docker/build-push-action@v4
+        with:
+          context: ./k8_application/MicroTodoUI
+          load: true
+          push: false
+          tags: microtodoui:${{ github.sha }}
 
-  #   - name: Set up QEMU
-  #     uses: docker/setup-qemu-action@v2
-    
-  #   - name: az login using federated credentials
-  #     uses: azure/login@v1
-  #     with:
-  #       client-id: "23604f03-61da-4f4c-a41e-76f2b84f5e09"
-  #       tenant-id: "90d26b91-2a7d-4998-a059-54dd93adebf6"
-  #       subscription-id: "651a708a-a61f-48a6-8006-0d3a0036a680"
+      - name: Trivy Image Vulnerability Scan
+        uses: aquasecurity/trivy-action@0.33.1
+        with:
+          image-ref: microtodoui:${{ github.sha }}
+          severity: CRITICAL,HIGH
+          vuln-type: os,library
+          ignore-unfixed: true
+          exit-code: 1
 
-  #   - name: login to ACR
-  #     run: |
-  #       az acr login --name k8acrregistry${{ github.event.inputs.env}}
+      - name: Generate SBOM (CycloneDX)
+        uses: aquasecurity/trivy-action@0.33.1
+        with:
+          scan-type: image
+          image-ref: microtodoui:${{ github.sha }}
+          format: cyclonedx
+          output: sbom-microtodoui.json
 
-  #   - name: Build image
-  #     uses: docker/build-push-action@v4
-  #     with:
-  #       context: ./k8_application/MicroTodoUI
-  #       push: false
-  #       tags: microtodoui:latest
-  #       load: true
+      - name: Upload SBOM Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom-microtodoui-${{ github.sha }}
+          path: sbom-microtodoui.json
 
-  #   - name: Run Trivy vulnerability scanner
-  #     uses: aquasecurity/trivy-action@0.33.1
-  #     with:
-  #       image-ref: 'microtodoui:latest'
-  #       format: 'table'
-  #       exit-code: '1'
-  #       ignore-unfixed: true
-  #       vuln-type: 'os,library'
-  #       severity: 'CRITICAL,HIGH'
+      - name: Push Image to ACR
+        uses: docker/build-push-action@v4
+        with:
+          context: ./k8_application/MicroTodoUI
+          push: true
+          tags: k8acrregistry${{ github.event.inputs.env }}.azurecr.io/microtodoui:${{ github.sha }}
 
-  #   - name: Push Image to ACR
-  #     uses: docker/build-push-action@v4
-  #     with:
-  #       context: ./k8_application/MicroTodoUI
-  #       push: true
-  #       tags: k8acrregistry${{ github.event.inputs.env}}.azurecr.io/microtodoui:latest
+# -------------------- CD --------------------
+  cd-deploy:
+    runs-on: ubuntu-latest
+    needs: ci-build_scan_push
+    steps:
+      - uses: actions/checkout@v3
 
-    # - name: Deploy to Kubernetes Cluster
-    #   uses: azure/aks-set-context@v2
-    #   with:
-    #     resource-group: rg-k8s-infra
-    #     cluster-name: todo-aks-cluster
+      - name: Azure Login (OIDC)
+        uses: azure/login@v1
+        with:
+          client-id: "23604f03-61da-4f4c-a41e-76f2b84f5e09"
+          tenant-id: "90d26b91-2a7d-4998-a059-54dd93adebf6"
+          subscription-id: "651a708a-a61f-48a6-8006-0d3a0036a680"
 
-    # - name: kubectl apply microtodoui manifest
-    #   uses: Azure/k8s-deploy@v5
-    #   with:
-    #       action: deploy
-    #       manifests: |
-    #           ./k8_application/MicroTodoUI/manifest/deployment.yaml
-    #           ./k8_application/MicroTodoUI/manifest/service.yaml
+      - name: AKS Context
+        uses: azure/aks-set-context@v2
+        with:
+          resource-group: rg-k8s-infra
+          cluster-name: todo-aks-cluster
+
+      - name: Deploy to AKS
+        uses: Azure/k8s-deploy@v5
+        with:
+          manifests: |
+            k8_application/MicroTodoUI/manifest/deployment.yaml
+            k8_application/MicroTodoUI/manifest/service.yaml
