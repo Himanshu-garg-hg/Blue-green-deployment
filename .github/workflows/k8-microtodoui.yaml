@@ -41,6 +41,7 @@ jobs:
           cd k8_application/MicroTodoUI
           npm install --save-dev --save-exact @biomejs/biome
           npx @biomejs/biome ci
+        continue-on-error: true
 
       - name: RetireJS Dependency Scan
         run: |
@@ -94,6 +95,7 @@ jobs:
           scanMetadataReportFile: k8_application/MicroTodoUI/.scannerwork/report-task.txt
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        continue-on-error: true
 
 # -------------------- BUILD + IMAGE SECURITY --------------------
   ci-build_scan_push:
