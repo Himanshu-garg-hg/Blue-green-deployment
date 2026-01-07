@@ -57,10 +57,13 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+      
     - name: sonar qube scanning(SAST)
       uses: SonarSource/sonarqube-scan-action@master
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      with:
+        projectBaseDir: ./k8_application/MicroTodoUI
 
   # build_and_push:
   #   runs-on: ubuntu-latest
