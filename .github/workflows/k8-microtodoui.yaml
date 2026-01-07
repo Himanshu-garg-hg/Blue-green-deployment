@@ -35,14 +35,14 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
     
-    - name: nodejs linting scanning
-      uses: wearerequired/lint-action@v2
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        linters: 'npm-audit'
-        paths: './k8_application/MicroTodoUI'
-      
-    - name: retire scanning used for frontend dependencies
+    - name: nodejs linting scanning - Biome
+      run: |
+        cd ./k8_application/MicroTodoUI
+        npm install --save-dev --save-exact @biomejs/biome
+        npx @biomejs/biome ci
+
+
+    - name: Retire - scanning used for frontend dependencies
       run: |       
         npm install -g retire
         cd ./k8_application/MicroTodoUI
