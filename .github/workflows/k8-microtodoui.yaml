@@ -76,7 +76,7 @@ jobs:
 # -------------------- SAST --------------------
   sast-scanning:
     runs-on: ubuntu-latest
-    needs: sca-scanning
+    needs: unit-testing
     steps:
       - uses: actions/checkout@v3
 
